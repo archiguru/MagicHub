@@ -7,7 +7,7 @@ fi
 # 添加所有文件到暂存区
 git add . -A
 # 获取当前时间戳
-datetime=$(date +%Y%m%d%H%M%S.%N)
+datetime=$(date +%Y%m%d%H%M%S)
 # 提交更新信息
 git commit -m "Auto Update[$datetime]."
 # 拉取远程代码

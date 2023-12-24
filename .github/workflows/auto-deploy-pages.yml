@@ -2,20 +2,20 @@
 # author: Jonny.Chang <jonny0624@gmail.com>
 name: Auto Publish Blog Site.
 
-# 只有推送到 master 才自动化
+# 只有推送到 main 才自动化
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 jobs:
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
@@ -23,7 +23,8 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.96.0'
+          hugo-version: '0.119.0'
+          # extended: true
 
       - name: Build
         run: hugo --minify

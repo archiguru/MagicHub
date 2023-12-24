@@ -6,7 +6,7 @@ lastmod: 2022-03-29T18:26:56+08:00
 
 author: "Jonny.Chang"
 authorLink: "https://archiguru.io"
-description: "NFT 开发|Go 爱好者|Java 爱好者|GitHub:ArchiGuru|这里是 ArchiGuru 博客，欢迎访问！"
+description: "架构师|Java 爱好者|GitHub:ArchiGuru|这里是 ArchiGuru 博客，欢迎访问！"
 tags: ["Golang"]
 categories: ["Golang"]
 
