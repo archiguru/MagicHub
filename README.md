@@ -1,34 +1,124 @@
-# Welcome to ArchiGuru!
+# MagicHub
 
-## 关于我
+私人订阅管理网页工具
 
-一名从事Java Web开发五年的程序猿，同时，我也在其他领域涉足过，如前端技术、区块链技术等等。在这些领域的不断探索中，我发现自己的视野更加开阔，也更加自信地应对变化。
+地址： [MagicHub](https://magic.eoysky.com)
 
-以下是我熟练掌握的技能和特点：
+[![Auto Sync](https://github.com/maximohub/MagicHub/actions/workflows/auto_sync.yml/badge.svg?branch=main)](https://github.com/maximohub/MagicHub/actions/workflows/auto_sync.yml)
 
-## 技能领域
+## 订阅地址
 
-- **Java Web开发**：我能够熟练地运用Spring Boot、MyBatis等框架和技术实现高效的后端服务。我有丰富的开发经验，能够独立完成从需求分析、设计、开发、测试到上线的全流程。
-- **前端技术**：我热衷于使用React和Vue.js等框架，以创造出更具用户友好性的界面。我可以独立完成前端页面的开发和优化。
-- **Golang**：我对Golang的应用也有独到的见解，熟练使用其优秀的性能来处理高并发场景的业务。
-- **Web3开发**：我熟悉Solidity、Web3.js等技术，可以开发出去中心化应用。我也能够使用区块链技术来进行底层实现，比如Hyperledger Fabric等，以更好地探索未来区块链的可能性。
+### iOS 测试版
 
-## 能力特点
+```plaintext
+https://magic.eoysky.com/conf/iOS-Surge-Dev.conf
+```
 
-作为一名程序猿，我热爱代码，热爱探索未知领域，并善于沟通和交流，具有以下优秀的特点：
+### iOS 正式版
 
-- **学习能力强**：我具有优秀的学习能力和解决问题的能力，能够快速掌握新的技术和工具，并且可以通过学习和实践解决遇到的问题。
-- **注重细节**：我是一个非常注重细节的人，能够从微小的细节中寻求改进，以实现更加卓越的用户体验。
-- **热爱分享**：我乐于和其他开发者分享自己的经验和想法，热衷于在技术社区中与其他人进行讨论和互动。
-- **好奇心强**：我始终保持着对未知领域的探索和学习，从而拓宽自己的视野。
-- **追求卓越**：我对自己的技术和作品有着很高的要求，努力提升自己的技能水平。
-- **团队合作**：我具备优秀的团队合作能力，能够协作开发、参与技术分享和团队建设。
-- **创新精神**：我热衷于尝试新技术和新思路，始终保持对创新的追求。
+```plaintext
+https://magic.eoysky.com/conf/iOS-Surge.conf
+```
 
-## 我的经验
+### macOS 正式版
 
-我曾经参与过一些项目的开发，包括电商平台、社交应用等，但是由于保密协议的限制，无法在此详细展开。在这些项目中，我担任过前端开发、后端开发以及全栈开发等不同角色，不断挑战自己，提升自己的技术水平和领导能力。
+```plaintext
+https://magic.eoysky.com/conf/macOS-Surge.conf
+```
 
-## 总结
+## Sub-Store
 
-作为一名技术领域的全栈选手，我相信自己能够为团队和公司带来丰富的技术经验和卓越的解决问题能力。我热衷于学习新技术和新领域，并且这些技术的不断学习和应用，让我具备了更强的技术分析、解决问题的能力，同时也更好地实现了产品与用户的接口和沟通。
+* 管理地址：
+
+```plaintext
+https://sub.eoysky.com/subs
+```
+
+* 所有节点 (NodeList)：
+
+```plaintext
+https://sub.eoysky.com/download/collection/NodeList?target=Surge
+```
+
+* 快速节点：(FastNode)
+
+```plaintext
+https://sub.eoysky.com/download/collection/FastNode?target=Surge
+```
+
+* 流媒体： (Streaming)
+
+```plaintext
+https://sub.eoysky.com/download/collection/Streaming?target=Surge
+```
+
+* 人工智能： (AI)
+
+```plaintext
+https://sub.eoysky.com/download/collection/AI?target=Surge
+```
+
+* 美国节点： (USA)
+
+```plaintext
+https://sub.eoysky.com/download/collection/USA?target=Surge
+```
+
+## 参考文档和资料
+
+* 官方手册: 
+
+```plaintext
+https://manual.nssurge.com/book/understanding-surge/cn
+```
+
+* 帮助中心: 
+
+```plaintext
+https://nssurge.zendesk.com
+```
+
+* 技术社区: 
+
+```plaintext
+https://community.nssurge.com
+```
+
+* 参考文档: 
+
+```plaintext
+https://surge.mitsea.com
+```
+
+* 规则仓库: 
+
+```plaintext
+https://github.com/blackmatrix7/ios_rule_script
+```
+
+## 示例文件: 
+
+```plaintext
+https://github.com/BlueGrave/Surge/blob/master/General.conf
+```
+
+```plaintext
+https://github.com/scomper/Surge/blob/master/surge3.conf.ini
+```
+
+```plaintext
+https://gist.github.com/Blankwonder/dca87b84b1052f4a6a277dce73e9c01a
+```
+
+```
+```plaintext
+```
+
+```
+```
+```
+
+```
+* 节点地址: 
+* 节点地址: https://flmsgo.xyz/?L1N1YnNjcmlwdGlvbi9TdXJnZU5vZGVMaXN0P3NpZD0yODAzMSZ0b2tlbj00dkVQS01MUW05WSZtbT0zODExNyZlMzViNGYxZjg2Zg==
+* 节点地址: https://sub.eoysky.com/download/collection/NodeList?target=Surge

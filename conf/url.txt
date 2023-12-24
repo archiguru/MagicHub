@@ -1,0 +1,8 @@
+
+https://magic.eoysky.com/conf/iOS-Surge.conf
+
+https://magic.eoysky.com/conf/iOS-Surge-Dev.conf
+
+https://magic.eoysky.com/conf/macOS-Surge.conf
+
+

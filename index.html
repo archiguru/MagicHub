@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Surge 配置 模块 插件 重写 脚本 解锁 去广告">
+	<title> MagicHub 模块 插件 重写 覆写 脚本 解锁 去广告 </title>
+	<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+	<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#8a8a8a">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/images/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+	<h1 style="text-align: center; color: #064571;">MagicHub - Surge</h1>
+	<h5>
+		<p style="text-align: center;">
+			<span style="color: #064571; ">Surge 相关配置|模块|重写|脚本|面板
+		</p>
+	</h5>
+	<div style="display: flex; margin: 30px 0;">
+		<span style="flex: 1; height: 3px; background-color: #4285F4;"></span>
+		<span style="flex: 1; height: 3px; background-color: #DB4437;"></span>
+		<span style="flex: 1; height: 3px; background-color: #F4B400;"></span>
+		<span style="flex: 1; height: 3px; background-color: #0F9D58;"></span>
+	</div>
+	<div class="subtitles">
+		<a href="/conf" class="myButton">⚙️ 配置</a>
+		<a href="/rule" class="myButton">🛂 规则</a>	
+		<a href="/module" class="myButton">📦 模块</a>
+		<a href="/script" class="myButton">👮 脚本</a>
+		<a href="/panel" class="myButton">🎉 面板</a>
+		<a href="/safari" class="myButton">🌐 Safari</a>
+		<!-- pages -->
+		<a href="pages/url.html" class="myButton">🔄 URL</a>
+		<!-- <a href="pages/manual.html" class="myButton">📖 教程</a> -->
+		<a href="pages/about.html" class="myButton">🤦🏼‍♂️ 关于</a>
+	</div>
+	<div class="bottom-line">
+		<span style="flex: 1; height: 3px; background-color: #0F9D58;"></span>
+		<span style="flex: 1; height: 3px; background-color: #F4B400;"></span>
+		<span style="flex: 1; height: 3px; background-color: #DB4437;"></span>
+		<span style="flex: 1; height: 3px; background-color: #4285F4;"></span>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		var colors = ['#4285F4', '#DB4437', '#0F9D58'];
+		colors = colors.concat(colors);
+		var buttons = document.querySelectorAll('.myButton');
+
+		var currentColorIndex = Math.floor(Math.random() * colors.length);
+		var currentColorCount = 1;
+		for (var i = 0; i < buttons.length; i++) {
+			buttons[i].style.backgroundColor = colors[currentColorIndex % colors.length];
+			currentColorCount++;
+			if (currentColorCount > 2) {
+				currentColorIndex++;
+				currentColorCount = 1;
+			}
+		}
+	</script>
+
+	<script>
+		$('button').on('click', function () {
+			var bgColor = $(this).css('background-color');
+			bgColor = bgColor.replace('rgb(', '').replace(')', '').split(',');
+			var r = 255 - parseInt(bgColor[0]);
+			var g = 255 - parseInt(bgColor[1]);
+			var b = 255 - parseInt(bgColor[2]);
+			$(this).css('background-color', 'rgb(' + r + ',' + g + ',' + b + ')');
+		});
+	</script>
+	<div id="ip-info"></div>
+
+	<script>
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				var data = JSON.parse(xhr.response);
+				var info = "<h4 style=\"width: 100%\">当前IP信息</h4>";
+				info += "<ul>";
+				info += "<li>IP地址: \n" + data.ip + "</li>";
+				info += "<li>服务商: \n" + data.isp + "</li>";
+				info += "<li>TimeZone: \n" + data.timezone + "</li>";
+				info += "<li>国家或地区: \n" + data.country_code + " - " + data.country + "</li>";
+				info += "<li>GIS 地理位置: \n" + data.longitude + ", " + data.latitude + "</li>";
+				//info += "<li>国家或地区: " + getFlag(data.country_code) + " " + data.country + "</li>";
+				document.getElementById("ip-info").innerHTML = info;
+			}
+		};
+		xhr.open("GET", "https://api.ip.sb/geoip", true);
+		xhr.send();
+
+		function getFlag(countryCode) {
+			const codePoints = countryCode.toUpperCase().split('').map(char => 127397 + char.charCodeAt());
+			return String.fromCodePoint(...codePoints);
+		}
+	</script>
+	<script>
+		$(document).ready(function () {
+			$('#share-button').click(function () {
+				$('#share-options').toggle();
+			});
+		});
+	</script>
+</body>
+
+</html>

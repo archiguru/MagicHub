@@ -1,0 +1,2938 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Surge 分流规则">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<title> Surge 分流规则 </title>
+
+	<style>
+		body {
+			margin: 20px 10%;
+		}
+
+		.myButton {
+			animation-name: button-animation;
+			animation-duration: 0.7s;
+			animation-timing-function: ease-in-out;
+		}
+
+		@keyframes button-animation {
+			0% {
+				transform: scale(0.3);
+			}
+
+			50% {
+				transform: scale(1.1);
+			}
+
+			100% {
+				transform: scale(1);
+			}
+		}
+
+		.myButton {
+			font-size: 15px;
+			text-shadow: 2px 4px 10px black;
+			color: white;
+			width: 120px;
+			height: 50px;
+			border-radius: 7px;
+			border: none;
+		}
+
+		.container {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+			justify-items: center;
+			grid-gap: 10px;
+		}
+
+		.myButton:hover {
+			background-color: #DB4437;
+			box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+		}
+
+		.breadcrumb {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			display: flex;
+		}
+
+		.breadcrumb li {
+			margin-right: 5px;
+		}
+
+		.breadcrumb li a {
+			text-decoration: none;
+			display: inline-block;
+			padding: 1px 5px;
+			font-size: 14px;
+			border-radius: 10px;
+			background-color: #064571;
+			color: white;
+		}
+
+		.breadcrumb li::after {
+			content: ">";
+			margin: 0 10px;
+		}
+
+		.breadcrumb li:last-child::after {
+			content: "";
+		}
+
+		#searchResults button {
+			text-decoration: none;
+			width: auto;
+		}
+
+		.search-bar {
+			text-align: center;
+		}
+
+		.search-bar input {
+			border: 2px solid #4285F4;
+			border-left-color: #DB4437;
+			border-top-color: #0F9D58;
+			border-bottom-color: #F4B400;
+			border-right-color: #4285F4;
+			border-radius: 5px;
+			font-size: 16px;
+			padding: 8px;
+			width: 200px;
+			outline: none;
+		}
+
+		.search-bar input:focus {
+			border-color: #DB4437;
+		}
+
+		.search-bar button {
+			background-color: #4285F4;
+			border: none;
+			border-radius: 5px;
+			color: white;
+			font-size: 5px;
+			padding: 1px;
+			margin-left: -4px;
+			cursor: pointer;
+		}
+
+		.search-bar button:hover {
+			background-color: #357ae8;
+		}
+
+		@media only screen and (min-width: 768px) {
+			.search-bar input {
+				width: 50%;
+				max-width: 500px;
+			}
+		}
+
+		@media only screen and (max-width: 767px) {
+			.search-bar input {
+				width: 90%;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<ul class="breadcrumb">
+		<li><a href="https://magic.eoysky.com">MagicHub 主页</a></li>
+		<li><a href="troll.html">Surge 分流规则</a></li>
+
+	</ul>
+
+	<h1 style="text-align: center; color: #064571;">Surge 分流规则</h1>
+	<div style="display: flex; margin: 30px 0;">
+		<span style="flex: 1; height: 3px; background-color: #0F9D58;"></span>
+		<span style="flex: 1; height: 3px; background-color: #F4B400;"></span>
+		<span style="flex: 1; height: 3px; background-color: #DB4437;"></span>
+		<span style="flex: 1; height: 3px; background-color: #4285F4;"></span>
+	</div>
+	<div class="search-bar">
+		<input id="searchBar" type="text" placeholder="搜索 Search...">
+	</div>
+	<div id="searchResults"></div>
+	<div id="content">
+		<div class="container">
+			<h6>
+				<p><a href="/rule/ai.list"><button class="myButton">AI</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/proxy.list"><button class="myButton">Proxy</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/reject.list"><button class="myButton">Reject</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/direct.list"><button class="myButton">Direct</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/nohybrid.list"><button class="myButton">NO-HYBRID</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DigiCert/DigiCert.list"><button class="myButton">DigiCert</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleID/AppleID.list"><button class="myButton">AppleID</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Himalaya/Himalaya.list"><button class="myButton">Himalaya</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Apple/Apple.list"><button class="myButton">Apple</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Apple/Apple_Resolve.list"><button class="myButton">Apple_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Apple/Apple_Domain.list"><button class="myButton">Apple_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CAS/CAS.list"><button class="myButton">CAS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Civitai/Civitai.list"><button class="myButton">Civitai</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HuaShuTV/HuaShuTV.list"><button class="myButton">HuaShuTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Starbucks/Starbucks.list"><button class="myButton">Starbucks</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Battle/Battle.list"><button class="myButton">Battle</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HuluJP/HuluJP.list"><button class="myButton">HuluJP</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Lenovo/Lenovo.list"><button class="myButton">Lenovo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HKBN/HKBN.list"><button class="myButton">HKBN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BOCOM/BOCOM.list"><button class="myButton">BOCOM</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/OKX/OKX.list"><button class="myButton">OKX</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CableTV/CableTV.list"><button class="myButton">CableTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/UPYun/UPYun.list"><button class="myButton">UPYun</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Anaconda/Anaconda.list"><button class="myButton">Anaconda</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Stackexchange/Stackexchange.list"><button
+							class="myButton">Stackexchange</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Npmjs/Npmjs.list"><button class="myButton">Npmjs</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Logitech/Logitech.list"><button class="myButton">Logitech</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BiliBiliIntl/BiliBiliIntl.list"><button
+							class="myButton">BiliBiliIntl</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Japonx/Japonx.list"><button class="myButton">Japonx</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Intel/Intel.list"><button class="myButton">Intel</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MeiTu/MeiTu.list"><button class="myButton">MeiTu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaNoMedia/ChinaNoMedia_Resolve.list"><button
+							class="myButton">ChinaNoMedia_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaNoMedia/ChinaNoMedia_Domain.list"><button
+							class="myButton">ChinaNoMedia_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaNoMedia/ChinaNoMedia.list"><button
+							class="myButton">ChinaNoMedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FlipBoard/FlipBoard.list"><button class="myButton">FlipBoard</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Keep/Keep.list"><button class="myButton">Keep</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DingTalk/DingTalk.list"><button class="myButton">DingTalk</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Pixiv/Pixiv.list"><button class="myButton">Pixiv</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Actalis/Actalis.list"><button class="myButton">Actalis</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Synology/Synology.list"><button class="myButton">Synology</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Unity/Unity.list"><button class="myButton">Unity</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Contentful/Contentful.list"><button class="myButton">Contentful</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YuanFuDao/YuanFuDao.list"><button class="myButton">YuanFuDao</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/RuanMei/RuanMei.list"><button class="myButton">RuanMei</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/VOA/VOA.list"><button class="myButton">VOA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/OnePlus/OnePlus.list"><button class="myButton">OnePlus</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/All4/All4.list"><button class="myButton">All4</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AsianMedia/AsianMedia_Resolve.list"><button
+							class="myButton">AsianMedia_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AsianMedia/AsianMedia.list"><button class="myButton">AsianMedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Westerndigital/Westerndigital.list"><button
+							class="myButton">Westerndigital</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AmazonTrust/AmazonTrust.list"><button class="myButton">AmazonTrust</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LanZouYun/LanZouYun.list"><button class="myButton">LanZouYun</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ABC/ABC.list"><button class="myButton">ABC</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HanYi/HanYi.list"><button class="myButton">HanYi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Pixnet/Pixnet.list"><button class="myButton">Pixnet</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CGB/CGB.list"><button class="myButton">CGB</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NivodTV/NivodTV.list"><button class="myButton">NivodTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/iCloudPrivateRelay/iCloudPrivateRelay.list"><button
+							class="myButton">iCloudPrivateRelay</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/56/56.list"><button class="myButton">56</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/McDonalds/McDonalds.list"><button class="myButton">McDonalds</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Bootcss/Bootcss.list"><button class="myButton">Bootcss</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Twitter/Twitter.list"><button class="myButton">Twitter</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Twitter/Twitter_Resolve.list"><button
+							class="myButton">Twitter_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AcFun/AcFun.list"><button class="myButton">AcFun</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CBS/CBS.list"><button class="myButton">CBS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Developer/Developer.list"><button class="myButton">Developer</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZDNS/ZDNS.list"><button class="myButton">ZDNS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Crypto/Crypto.list"><button class="myButton">Crypto</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DingXiangYuan/DingXiangYuan.list"><button
+							class="myButton">DingXiangYuan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChuangKeTie/ChuangKeTie.list"><button class="myButton">ChuangKeTie</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DuoWan/DuoWan.list"><button class="myButton">DuoWan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Atomdata/Atomdata.list"><button class="myButton">Atomdata</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Mozilla/Mozilla.list"><button class="myButton">Mozilla</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SlideShare/SlideShare.list"><button class="myButton">SlideShare</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FengXiaWangLuo/FengXiaWangLuo.list"><button
+							class="myButton">FengXiaWangLuo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NowE/NowE.list"><button class="myButton">NowE</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ParamountPlus/ParamountPlus.list"><button
+							class="myButton">ParamountPlus</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleMedia/AppleMedia.list"><button class="myButton">AppleMedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TruthSocial/TruthSocial.list"><button class="myButton">TruthSocial</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LianMeng/LianMeng.list"><button class="myButton">LianMeng</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZeeTV/ZeeTV.list"><button class="myButton">ZeeTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HamiVideo/HamiVideo.list"><button class="myButton">HamiVideo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Zee/Zee.list"><button class="myButton">Zee</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KKBOX/KKBOX.list"><button class="myButton">KKBOX</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TestFlight/TestFlight.list"><button class="myButton">TestFlight</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Wteam/Wteam.list"><button class="myButton">Wteam</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WangSuKeJi/WangSuKeJi.list"><button class="myButton">WangSuKeJi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Duolingo/Duolingo.list"><button class="myButton">Duolingo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Gitee/Gitee.list"><button class="myButton">Gitee</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GaoDe/GaoDe.list"><button class="myButton">GaoDe</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CHT/CHT.list"><button class="myButton">CHT</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Razer/Razer.list"><button class="myButton">Razer</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/2KGames/2KGames.list"><button class="myButton">2KGames</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CMB/CMB.list"><button class="myButton">CMB</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Migu/Migu.list"><button class="myButton">Migu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Docker/Docker.list"><button class="myButton">Docker</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/JianShu/JianShu.list"><button class="myButton">JianShu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ShenMa/ShenMa.list"><button class="myButton">ShenMa</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Speedtest/Speedtest.list"><button class="myButton">Speedtest</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HBOAsia/HBOAsia.list"><button class="myButton">HBOAsia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WeType/WeType.list"><button class="myButton">WeType</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PikPak/PikPak.list"><button class="myButton">PikPak</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/3Type/3Type.list"><button class="myButton">3Type</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/JOOX/JOOX.list"><button class="myButton">JOOX</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/JOOX/JOOX_Resolve.list"><button class="myButton">JOOX_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Ku6/Ku6.list"><button class="myButton">Ku6</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhuanZhuan/ZhuanZhuan.list"><button class="myButton">ZhuanZhuan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Discord/Discord.list"><button class="myButton">Discord</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Steam/Steam.list"><button class="myButton">Steam</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PlayStation/PlayStation.list"><button class="myButton">PlayStation</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LondonReal/LondonReal.list"><button class="myButton">LondonReal</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Shanling/Shanling.list"><button class="myButton">Shanling</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Riot/Riot.list"><button class="myButton">Riot</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SMG/SMG.list"><button class="myButton">SMG</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhongYuanYiShang/ZhongYuanYiShang.list"><button
+							class="myButton">ZhongYuanYiShang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Vercel/Vercel.list"><button class="myButton">Vercel</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhongXingTongXun/ZhongXingTongXun.list"><button
+							class="myButton">ZhongXingTongXun</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Huawei/Huawei.list"><button class="myButton">Huawei</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WenJuanXing/WenJuanXing.list"><button class="myButton">WenJuanXing</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Huffpost/Huffpost.list"><button class="myButton">Huffpost</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Wikipedia/Wikipedia.list"><button class="myButton">Wikipedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TrustWave/TrustWave.list"><button class="myButton">TrustWave</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Domob/Domob.list"><button class="myButton">Domob</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Linguee/Linguee.list"><button class="myButton">Linguee</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Voxmedia/Voxmedia.list"><button class="myButton">Voxmedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/17zuoye/17zuoye.list"><button class="myButton">17zuoye</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Amazon/Amazon.list"><button class="myButton">Amazon</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Amazon/Amazon_Resolve.list"><button class="myButton">Amazon_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AddToAny/AddToAny.list"><button class="myButton">AddToAny</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/3dm/3dm.list"><button class="myButton">3dm</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GitLab/GitLab.list"><button class="myButton">GitLab</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Privacy/Privacy_Domain.list"><button
+							class="myButton">Privacy_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Privacy/Privacy.list"><button class="myButton">Privacy</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Privacy/Privacy_Resolve.list"><button
+							class="myButton">Privacy_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BlockHttpDNS/BlockHttpDNS.list"><button
+							class="myButton">BlockHttpDNS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BlockHttpDNS/BlockHttpDNS_Resolve.list"><button
+							class="myButton">BlockHttpDNS_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/STUN/STUN_Resolve.list"><button class="myButton">STUN_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/STUN/STUN.list"><button class="myButton">STUN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WeTV/WeTV.list"><button class="myButton">WeTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WeTV/WeTV_Resolve.list"><button class="myButton">WeTV_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DiscoveryPlus/DiscoveryPlus.list"><button
+							class="myButton">DiscoveryPlus</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Baidu/Baidu.list"><button class="myButton">Baidu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HP/HP.list"><button class="myButton">HP</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Overcast/Overcast.list"><button class="myButton">Overcast</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DangDang/DangDang.list"><button class="myButton">DangDang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPsBGP/ChinaIPsBGP.list"><button class="myButton">ChinaIPsBGP</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPsBGP/ChinaIPsBGP_Resolve.list"><button
+							class="myButton">ChinaIPsBGP_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BOC/BOC.list"><button class="myButton">BOC</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KKTV/KKTV.list"><button class="myButton">KKTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Proxy/Proxy_Domain.list"><button class="myButton">Proxy_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Proxy/Proxy.list"><button class="myButton">Proxy</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Proxy/Proxy_Resolve.list"><button class="myButton">Proxy_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KuaiDi100/KuaiDi100.list"><button class="myButton">KuaiDi100</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Heroku/Heroku.list"><button class="myButton">Heroku</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/QiNiuYun/QiNiuYun.list"><button class="myButton">QiNiuYun</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaDNS/ChinaDNS_Resolve.list"><button
+							class="myButton">ChinaDNS_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaDNS/ChinaDNS.list"><button class="myButton">ChinaDNS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Assassin'sCreed/Assassin'sCreed-Origins/Assassin'sCreed-Origins.list"><button
+							class="myButton">Assassin'sCreed-Origins</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Assassin'sCreed/Assassin'sCreed-Origins/Assassin'sCreed-Origins_Resolve.list"><button
+							class="myButton">Assassin'sCreed-Origins_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Assassin'sCreed/Assassin'sCreed-Odyssey/Assassin'sCreed-Odyssey_Resolve.list"><button
+							class="myButton">Assassin'sCreed-Odyssey_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Assassin'sCreed/Assassin'sCreed-Odyssey/Assassin'sCreed-Odyssey.list"><button
+							class="myButton">Assassin'sCreed-Odyssey</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Direct/Direct.list"><button class="myButton">Direct</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LastFM/LastFM.list"><button class="myButton">LastFM</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Youku/Youku.list"><button class="myButton">Youku</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Youku/Youku_Resolve.list"><button class="myButton">Youku_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CCTV/CCTV.list"><button class="myButton">CCTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/OuPeng/OuPeng.list"><button class="myButton">OuPeng</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WoLai/WoLai.list"><button class="myButton">WoLai</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GlobalScholar/GlobalScholar.list"><button
+							class="myButton">GlobalScholar</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Fiio/Fiio.list"><button class="myButton">Fiio</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Pinterest/Pinterest.list"><button class="myButton">Pinterest</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TianTianKanKan/TianTianKanKan.list"><button
+							class="myButton">TianTianKanKan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/myTVSUPER/myTVSUPER.list"><button class="myButton">myTVSUPER</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ClubhouseIP/ClubhouseIP_Resolve.list"><button
+							class="myButton">ClubhouseIP_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ClubhouseIP/ClubhouseIP.list"><button class="myButton">ClubhouseIP</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Dubox/Dubox.list"><button class="myButton">Dubox</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/RTHK/RTHK.list"><button class="myButton">RTHK</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ICBC/ICBC.list"><button class="myButton">ICBC</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Duckduckgo/Duckduckgo.list"><button class="myButton">Duckduckgo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Wordpress/Wordpress.list"><button class="myButton">Wordpress</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SublimeText/SublimeText.list"><button class="myButton">SublimeText</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/UBI/UBI.list"><button class="myButton">UBI</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HunanTV/HunanTV.list"><button class="myButton">HunanTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Hkgolden/Hkgolden.list"><button class="myButton">Hkgolden</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Fox/Fox.list"><button class="myButton">Fox</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Majsoul/Majsoul.list"><button class="myButton">Majsoul</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Python/Python.list"><button class="myButton">Python</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Agora/Agora.list"><button class="myButton">Agora</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Xbox/Xbox.list"><button class="myButton">Xbox</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BoXun/BoXun.list"><button class="myButton">BoXun</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GuiGuDongLi/GuiGuDongLi.list"><button class="myButton">GuiGuDongLi</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HuluUSA/HuluUSA.list"><button class="myButton">HuluUSA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppStore/AppStore.list"><button class="myButton">AppStore</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Dynu/Dynu.list"><button class="myButton">Dynu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Hpplay/Hpplay.list"><button class="myButton">Hpplay</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HashiCorp/HashiCorp.list"><button class="myButton">HashiCorp</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/JinJiangWenXue/JinJiangWenXue.list"><button
+							class="myButton">JinJiangWenXue</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WiFiMaster/WiFiMaster.list"><button class="myButton">WiFiMaster</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BiliBili/BiliBili.list"><button class="myButton">BiliBili</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BiliBili/BiliBili_Resolve.list"><button
+							class="myButton">BiliBili_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleDev/AppleDev.list"><button class="myButton">AppleDev</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Afdian/Afdian.list"><button class="myButton">Afdian</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChengTongWangPan/ChengTongWangPan.list"><button
+							class="myButton">ChengTongWangPan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/EHGallery/EHGallery.list"><button class="myButton">EHGallery</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/EHGallery/EHGallery_Resolve.list"><button
+							class="myButton">EHGallery_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Accuweather/Accuweather.list"><button class="myButton">Accuweather</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Acer/Acer.list"><button class="myButton">Acer</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MicrosoftEdge/MicrosoftEdge.list"><button
+							class="myButton">MicrosoftEdge</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Qualcomm/Qualcomm.list"><button class="myButton">Qualcomm</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaTelecom/ChinaTelecom.list"><button
+							class="myButton">ChinaTelecom</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Funshion/Funshion.list"><button class="myButton">Funshion</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Mogujie/Mogujie.list"><button class="myButton">Mogujie</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YiChe/YiChe.list"><button class="myButton">YiChe</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MOMOShop/MOMOShop.list"><button class="myButton">MOMOShop</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaASN/ChinaASN_Resolve.list"><button
+							class="myButton">ChinaASN_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaASN/ChinaASN.list"><button class="myButton">ChinaASN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Dandanplay/Dandanplay.list"><button class="myButton">Dandanplay</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/IKEA/IKEA.list"><button class="myButton">IKEA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/EasyPrivacy/EasyPrivacy_Domain.list"><button
+							class="myButton">EasyPrivacy_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Imgur/Imgur.list"><button class="myButton">Imgur</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BBC/BBC.list"><button class="myButton">BBC</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Mail/Mail.list"><button class="myButton">Mail</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMaxNoMedia/ChinaMaxNoMedia_Domain.list"><button
+							class="myButton">ChinaMaxNoMedia_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMaxNoMedia/ChinaMaxNoMedia.list"><button
+							class="myButton">ChinaMaxNoMedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMaxNoMedia/ChinaMaxNoMedia_Resolve.list"><button
+							class="myButton">ChinaMaxNoMedia_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/friDay/friDay.list"><button class="myButton">friDay</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/OP/OP.list"><button class="myButton">OP</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AmazonIP/AmazonIP.list"><button class="myButton">AmazonIP</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AmazonIP/AmazonIP_Resolve.list"><button
+							class="myButton">AmazonIP_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FOXNOW/FOXNOW.list"><button class="myButton">FOXNOW</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Classic/Classic.list"><button class="myButton">Classic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/OneDrive/OneDrive.list"><button class="myButton">OneDrive</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DouBan/DouBan.list"><button class="myButton">DouBan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppLovin/AppLovin.list"><button class="myButton">AppLovin</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/UKMedia/UKMedia.list"><button class="myButton">UKMedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BaiShanYunKeJi/BaiShanYunKeJi.list"><button
+							class="myButton">BaiShanYunKeJi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KuangShi/KuangShi_Resolve.list"><button
+							class="myButton">KuangShi_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KuangShi/KuangShi.list"><button class="myButton">KuangShi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/9to5/9to5.list"><button class="myButton">9to5</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdColony/AdColony.list"><button class="myButton">AdColony</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Wanfang/Wanfang.list"><button class="myButton">Wanfang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Abema/Abema.list"><button class="myButton">Abema</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Anonv/Anonv.list"><button class="myButton">Anonv</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Google/Google_Resolve.list"><button class="myButton">Google_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Google/Google.list"><button class="myButton">Google</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleNews/AppleNews.list"><button class="myButton">AppleNews</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/1337x/1337x.list"><button class="myButton">1337x</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NTPService/NTPService.list"><button class="myButton">NTPService</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Manorama/Manorama.list"><button class="myButton">Manorama</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HuanJu/HuanJu.list"><button class="myButton">HuanJu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Zoho/Zoho.list"><button class="myButton">Zoho</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SFExpress/SFExpress.list"><button class="myButton">SFExpress</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Microsoft/Microsoft.list"><button class="myButton">Microsoft</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LiTV/LiTV.list"><button class="myButton">LiTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/IPTVMainland/IPTVMainland_Resolve.list"><button
+							class="myButton">IPTVMainland_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/IPTVMainland/IPTVMainland.list"><button
+							class="myButton">IPTVMainland</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Claude/Claude.list"><button class="myButton">Claude</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XieCheng/XieCheng.list"><button class="myButton">XieCheng</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Bestbuy/Bestbuy.list"><button class="myButton">Bestbuy</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CaiNiao/CaiNiao.list"><button class="myButton">CaiNiao</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Spotify/Spotify_Resolve.list"><button
+							class="myButton">Spotify_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Spotify/Spotify.list"><button class="myButton">Spotify</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Deezer/Deezer.list"><button class="myButton">Deezer</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NYPost/NYPost.list"><button class="myButton">NYPost</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Coolapk/Coolapk.list"><button class="myButton">Coolapk</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Bing/Bing.list"><button class="myButton">Bing</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Dailymail/Dailymail.list"><button class="myButton">Dailymail</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DigitalOcean/DigitalOcean.list"><button
+							class="myButton">DigitalOcean</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MingLueZhaoHui/MingLueZhaoHui.list"><button
+							class="myButton">MingLueZhaoHui</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KugouKuwo/KugouKuwo_Resolve.list"><button
+							class="myButton">KugouKuwo_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KugouKuwo/KugouKuwo.list"><button class="myButton">KugouKuwo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TigerFintech/TigerFintech.list"><button
+							class="myButton">TigerFintech</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NGAA/NGAA.list"><button class="myButton">NGAA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Naver/Naver.list"><button class="myButton">Naver</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Naver/Naver_Resolve.list"><button class="myButton">Naver_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XingKongWuXian/XingKongWuXian.list"><button
+							class="myButton">XingKongWuXian</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PChomeTW/PChomeTW.list"><button class="myButton">PChomeTW</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DMM/DMM_Resolve.list"><button class="myButton">DMM_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DMM/DMM.list"><button class="myButton">DMM</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SouFang/SouFang.list"><button class="myButton">SouFang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Oracle/Oracle.list"><button class="myButton">Oracle</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Jquery/Jquery.list"><button class="myButton">Jquery</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloudflare/Cloudflare.list"><button class="myButton">Cloudflare</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloudflare/Cloudflare_Resolve.list"><button
+							class="myButton">Cloudflare_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Vimeo/Vimeo.list"><button class="myButton">Vimeo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Hearthstone/Hearthstone.list"><button class="myButton">Hearthstone</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Hearthstone/Hearthstone_Resolve.list"><button
+							class="myButton">Hearthstone_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Entrust/Entrust.list"><button class="myButton">Entrust</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Movefree/Movefree.list"><button class="myButton">Movefree</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Viki/Viki.list"><button class="myButton">Viki</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/58TongCheng/58TongCheng.list"><button class="myButton">58TongCheng</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Intercom/Intercom.list"><button class="myButton">Intercom</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BianFeng/BianFeng.list"><button class="myButton">BianFeng</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AliPay/AliPay.list"><button class="myButton">AliPay</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PotatoChat/PotatoChat_Resolve.list"><button
+							class="myButton">PotatoChat_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PotatoChat/PotatoChat.list"><button class="myButton">PotatoChat</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/6JianFang/6JianFang.list"><button class="myButton">6JianFang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GovCN/GovCN.list"><button class="myButton">GovCN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TelegramSG/TelegramSG.list"><button class="myButton">TelegramSG</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TelegramSG/TelegramSG_Resolve.list"><button
+							class="myButton">TelegramSG_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Sharethis/Sharethis.list"><button class="myButton">Sharethis</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WanMeiShiJie/WanMeiShiJie.list"><button
+							class="myButton">WanMeiShiJie</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AFP/AFP.list"><button class="myButton">AFP</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaTest/ChinaTest_Resolve.list"><button
+							class="myButton">ChinaTest_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaTest/ChinaTest.list"><button class="myButton">ChinaTest</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaTest/ChinaTest_Domain.list"><button
+							class="myButton">ChinaTest_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Shopify/Shopify.list"><button class="myButton">Shopify</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Clubhouse/Clubhouse_Resolve.list"><button
+							class="myButton">Clubhouse_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Clubhouse/Clubhouse.list"><button class="myButton">Clubhouse</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TianWeiChengXin/TianWeiChengXin.list"><button
+							class="myButton">TianWeiChengXin</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Blizzard/Blizzard.list"><button class="myButton">Blizzard</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Blizzard/Blizzard_Resolve.list"><button
+							class="myButton">Blizzard_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YiZhiBo/YiZhiBo.list"><button class="myButton">YiZhiBo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CaiXinChuanMei/CaiXinChuanMei.list"><button
+							class="myButton">CaiXinChuanMei</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DiLianWangLuo/DiLianWangLuo.list"><button
+							class="myButton">DiLianWangLuo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SourceForge/SourceForge.list"><button class="myButton">SourceForge</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AirWick/AirWick.list"><button class="myButton">AirWick</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Tesla/Tesla.list"><button class="myButton">Tesla</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ALJazeera/ALJazeera.list"><button class="myButton">ALJazeera</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdGuardSDNSFilter/Direct/Direct.list"><button
+							class="myButton">Direct</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdGuardSDNSFilter/AdGuardSDNSFilter_Domain.list"><button
+							class="myButton">AdGuardSDNSFilter_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CCB/CCB.list"><button class="myButton">CCB</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Bloomberg/Bloomberg.list"><button class="myButton">Bloomberg</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Samsung/Samsung.list"><button class="myButton">Samsung</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdobeActivation/AdobeActivation.list"><button
+							class="myButton">AdobeActivation</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMedia/ChinaMedia_Resolve.list"><button
+							class="myButton">ChinaMedia_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMedia/ChinaMedia.list"><button class="myButton">ChinaMedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FitnessPlus/FitnessPlus.list"><button class="myButton">FitnessPlus</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/UCloud/UCloud.list"><button class="myButton">UCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Flurry/Flurry.list"><button class="myButton">Flurry</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ShangHaiJuXiao/ShangHaiJuXiao.list"><button
+							class="myButton">ShangHaiJuXiao</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Garena/Garena.list"><button class="myButton">Garena</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/USMedia/USMedia.list"><button class="myButton">USMedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NetEaseMusic/NetEaseMusic_Resolve.list"><button
+							class="myButton">NetEaseMusic_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NetEaseMusic/NetEaseMusic.list"><button
+							class="myButton">NetEaseMusic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KakaoTalk/KakaoTalk.list"><button class="myButton">KakaoTalk</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KakaoTalk/KakaoTalk_Resolve.list"><button
+							class="myButton">KakaoTalk_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/VikACG/VikACG.list"><button class="myButton">VikACG</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Camera360/Camera360.list"><button class="myButton">Camera360</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BeStore/BeStore.list"><button class="myButton">BeStore</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PingAn/PingAn.list"><button class="myButton">PingAn</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cisco/Cisco.list"><button class="myButton">Cisco</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMax/ChinaMax_No_IPv6.list"><button
+							class="myButton">ChinaMax_No_IPv6</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMax/ChinaMax_Resolve.list"><button
+							class="myButton">ChinaMax_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMax/ChinaMax_Domain.list"><button
+							class="myButton">ChinaMax_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMax/ChinaMax.list"><button class="myButton">ChinaMax</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMax/ChinaMax_No_IPv6_Resolve.list"><button
+							class="myButton">ChinaMax_No_IPv6_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KuKeMusic/KuKeMusic.list"><button class="myButton">KuKeMusic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Buypass/Buypass.list"><button class="myButton">Buypass</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Asahi/Asahi.list"><button class="myButton">Asahi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AnTianKeJi/AnTianKeJi.list"><button class="myButton">AnTianKeJi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Antutu/Antutu.list"><button class="myButton">Antutu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HKOpenTV/HKOpenTV.list"><button class="myButton">HKOpenTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Gigabyte/Gigabyte.list"><button class="myButton">Gigabyte</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FOXPlus/FOXPlus.list"><button class="myButton">FOXPlus</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/GameDownload/GameDownload.list"><button
+							class="myButton">GameDownload</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/Assassin'sCreed-Origins/Assassin'sCreed-Origins.list"><button
+							class="myButton">Assassin'sCreed-Origins</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/Assassin'sCreed-Origins/Assassin'sCreed-Origins_Resolve.list"><button
+							class="myButton">Assassin'sCreed-Origins_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/Roblox/Roblox.list"><button class="myButton">Roblox</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/Game.list"><button class="myButton">Game</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/TencentLoLMobile/TencentLoLMobile.list"><button
+							class="myButton">TencentLoLMobile</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/Assassin'sCreed-Odyssey/Assassin'sCreed-Odyssey_Resolve.list"><button
+							class="myButton">Assassin'sCreed-Odyssey_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/Assassin'sCreed-Odyssey/Assassin'sCreed-Odyssey.list"><button
+							class="myButton">Assassin'sCreed-Odyssey</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/Game_Resolve.list"><button class="myButton">Game_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/Nikke/Nikke.list"><button class="myButton">Nikke</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/Nikke/Nikke_Resolve.list"><button
+							class="myButton">Nikke_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Game/GameDownloadCN/GameDownloadCN.list"><button
+							class="myButton">GameDownloadCN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FeiZhu/FeiZhu.list"><button class="myButton">FeiZhu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Haveibeenpwned/Haveibeenpwned.list"><button
+							class="myButton">Haveibeenpwned</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HibyMusic/HibyMusic.list"><button class="myButton">HibyMusic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Tumblr/Tumblr.list"><button class="myButton">Tumblr</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/8btc/8btc.list"><button class="myButton">8btc</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TencentVideo/TencentVideo_Resolve.list"><button
+							class="myButton">TencentVideo_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TencentVideo/TencentVideo.list"><button
+							class="myButton">TencentVideo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YouTube/YouTube.list"><button class="myButton">YouTube</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YouTube/YouTube_Resolve.list"><button
+							class="myButton">YouTube_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TelegramNL/TelegramNL.list"><button class="myButton">TelegramNL</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TelegramNL/TelegramNL_Resolve.list"><button
+							class="myButton">TelegramNL_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ThomsonReuters/ThomsonReuters.list"><button
+							class="myButton">ThomsonReuters</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AOL/AOL.list"><button class="myButton">AOL</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AnandTech/AnandTech.list"><button class="myButton">AnandTech</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Alibaba/Alibaba.list"><button class="myButton">Alibaba</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Alibaba/Alibaba_Resolve.list"><button
+							class="myButton">Alibaba_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Alibaba/Alibaba_Domain.list"><button
+							class="myButton">Alibaba_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Dell/Dell.list"><button class="myButton">Dell</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/VISA/VISA.list"><button class="myButton">VISA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Beats/Beats.list"><button class="myButton">Beats</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Nintendo/Nintendo_Resolve.list"><button
+							class="myButton">Nintendo_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Nintendo/Nintendo.list"><button class="myButton">Nintendo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Apkpure/Apkpure.list"><button class="myButton">Apkpure</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/eBay/eBay.list"><button class="myButton">eBay</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Reabble/Reabble.list"><button class="myButton">Reabble</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Jetbrains/Jetbrains.list"><button class="myButton">Jetbrains</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Anjuke/Anjuke.list"><button class="myButton">Anjuke</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Arphic/Arphic.list"><button class="myButton">Arphic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Dood/Dood.list"><button class="myButton">Dood</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MeiZu/MeiZu.list"><button class="myButton">MeiZu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Limelight/Limelight.list"><button class="myButton">Limelight</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Gog/Gog.list"><button class="myButton">Gog</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CyberTrust/CyberTrust.list"><button class="myButton">CyberTrust</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Canon/Canon.list"><button class="myButton">Canon</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LvMiLianChuang/LvMiLianChuang.list"><button
+							class="myButton">LvMiLianChuang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Notion/Notion.list"><button class="myButton">Notion</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LineTV/LineTV.list"><button class="myButton">LineTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Gettyimages/Gettyimages.list"><button class="myButton">Gettyimages</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HeMa/HeMa.list"><button class="myButton">HeMa</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Dailymotion/Dailymotion.list"><button class="myButton">Dailymotion</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Ali213/Ali213.list"><button class="myButton">Ali213</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/IBM/IBM.list"><button class="myButton">IBM</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YouTubeMusic/YouTubeMusic.list"><button
+							class="myButton">YouTubeMusic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/aiXcoder/aiXcoder.list"><button class="myButton">aiXcoder</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Akamai/Akamai.list"><button class="myButton">Akamai</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Supercell/Supercell_Resolve.list"><button
+							class="myButton">Supercell_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Supercell/Supercell.list"><button class="myButton">Supercell</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Tmdb/Tmdb.list"><button class="myButton">Tmdb</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HBOHK/HBOHK.list"><button class="myButton">HBOHK</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/StarCraftII/StarCraftII_Resolve.list"><button
+							class="myButton">StarCraftII_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/StarCraftII/StarCraftII.list"><button class="myButton">StarCraftII</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Americasvoice/Americasvoice.list"><button
+							class="myButton">Americasvoice</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/VK/VK.list"><button class="myButton">VK</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/EncoreTVB/EncoreTVB.list"><button class="myButton">EncoreTVB</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AMD/AMD.list"><button class="myButton">AMD</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TVer/TVer.list"><button class="myButton">TVer</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DiSiFanShi/DiSiFanShi.list"><button class="myButton">DiSiFanShi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Jfrog/Jfrog.list"><button class="myButton">Jfrog</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ifanr/ifanr.list"><button class="myButton">ifanr</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Netflix/Netflix.list"><button class="myButton">Netflix</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Netflix/Netflix_Resolve.list"><button
+							class="myButton">Netflix_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/12306/12306.list"><button class="myButton">12306</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WeChat/WeChat.list"><button class="myButton">WeChat</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WeChat/WeChat_Resolve.list"><button class="myButton">WeChat_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/UC/UC.list"><button class="myButton">UC</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AirChina/AirChina.list"><button class="myButton">AirChina</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HuYa/HuYa.list"><button class="myButton">HuYa</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TapTap/TapTap.list"><button class="myButton">TapTap</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Xunlei/Xunlei.list"><button class="myButton">Xunlei</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Adobe/Adobe.list"><button class="myButton">Adobe</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/iTalkBB/iTalkBB.list"><button class="myButton">iTalkBB</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WanKaHuanJu/WanKaHuanJu.list"><button class="myButton">WanKaHuanJu</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YYeTs/YYeTs.list"><button class="myButton">YYeTs</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Peacock/Peacock.list"><button class="myButton">Peacock</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FangZhengDianZi/FangZhengDianZi.list"><button
+							class="myButton">FangZhengDianZi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HeroesoftheStorm/HeroesoftheStorm.list"><button
+							class="myButton">HeroesoftheStorm</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HeroesoftheStorm/HeroesoftheStorm_Resolve.list"><button
+							class="myButton">HeroesoftheStorm_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Chromecast/Chromecast.list"><button class="myButton">Chromecast</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TeraBox/TeraBox.list"><button class="myButton">TeraBox</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GoogleVoice/GoogleVoice.list"><button class="myButton">GoogleVoice</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Hupu/Hupu.list"><button class="myButton">Hupu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Picsee/Picsee.list"><button class="myButton">Picsee</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CKJR/CKJR.list"><button class="myButton">CKJR</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TCL/TCL.list"><button class="myButton">TCL</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleMail/AppleMail.list"><button class="myButton">AppleMail</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LivePerson/LivePerson.list"><button class="myButton">LivePerson</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/China/China.list"><button class="myButton">China</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/China/China_Resolve.list"><button class="myButton">China_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/China/China_Domain.list"><button class="myButton">China_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SoundCloud/SoundCloud.list"><button class="myButton">SoundCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NaSDDNS/NaSDDNS.list"><button class="myButton">NaSDDNS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NaSDDNS/NaSDDNS_Resolve.list"><button
+							class="myButton">NaSDDNS_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CNN/CNN.list"><button class="myButton">CNN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XiaoMi/XiaoMi_Resolve.list"><button class="myButton">XiaoMi_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XiaoMi/XiaoMi.list"><button class="myButton">XiaoMi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/JueJin/JueJin.list"><button class="myButton">JueJin</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Protonmail/Protonmail.list"><button class="myButton">Protonmail</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SmarTone/SmarTone.list"><button class="myButton">SmarTone</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Nvidia/Nvidia.list"><button class="myButton">Nvidia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BardAI/BardAI.list"><button class="myButton">BardAI</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TeamViewer/TeamViewer_Resolve.list"><button
+							class="myButton">TeamViewer_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TeamViewer/TeamViewer.list"><button class="myButton">TeamViewer</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SuiShiChuanMei/SuiShiChuanMei.list"><button
+							class="myButton">SuiShiChuanMei</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/360/360.list"><button class="myButton">360</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GitHub/GitHub.list"><button class="myButton">GitHub</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Figma/Figma.list"><button class="myButton">Figma</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BritboxUK/BritboxUK.list"><button class="myButton">BritboxUK</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/EastMoney/EastMoney.list"><button class="myButton">EastMoney</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Facebook/Facebook_Resolve.list"><button
+							class="myButton">Facebook_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Facebook/Facebook.list"><button class="myButton">Facebook</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KouDaiShiShang/KouDaiShiShang.list"><button
+							class="myButton">KouDaiShiShang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Vancl/Vancl.list"><button class="myButton">Vancl</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NYTimes/NYTimes.list"><button class="myButton">NYTimes</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Atlassian/Atlassian.list"><button class="myButton">Atlassian</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XueQiu/XueQiu.list"><button class="myButton">XueQiu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FuboTV/FuboTV.list"><button class="myButton">FuboTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DiDi/DiDi.list"><button class="myButton">DiDi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DaMai/DaMai.list"><button class="myButton">DaMai</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Threads/Threads.list"><button class="myButton">Threads</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FengHuangWang/FengHuangWang.list"><button
+							class="myButton">FengHuangWang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Overwatch/Overwatch.list"><button class="myButton">Overwatch</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Overwatch/Overwatch_Resolve.list"><button
+							class="myButton">Overwatch_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FreeCodeCamp/FreeCodeCamp.list"><button
+							class="myButton">FreeCodeCamp</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TaiKang/TaiKang.list"><button class="myButton">TaiKang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Line/Line_Resolve.list"><button class="myButton">Line_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Line/Line.list"><button class="myButton">Line</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Zendesk/Zendesk.list"><button class="myButton">Zendesk</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleDaily/AppleDaily.list"><button class="myButton">AppleDaily</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Download/Download.list"><button class="myButton">Download</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AMP/AMP.list"><button class="myButton">AMP</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MeWatch/MeWatch.list"><button class="myButton">MeWatch</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Identrust/Identrust.list"><button class="myButton">Identrust</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/My5/My5.list"><button class="myButton">My5</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Epic/Epic.list"><button class="myButton">Epic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CETV/CETV.list"><button class="myButton">CETV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Purikonejp/Purikonejp.list"><button class="myButton">Purikonejp</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Patreon/Patreon.list"><button class="myButton">Patreon</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HBOUSA/HBOUSA.list"><button class="myButton">HBOUSA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TaiheMusic/TaiheMusic.list"><button class="myButton">TaiheMusic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Collabora/Collabora.list"><button class="myButton">Collabora</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Espn/Espn.list"><button class="myButton">Espn</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Pandora/Pandora.list"><button class="myButton">Pandora</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PrivateTracker/PrivateTracker_Resolve.list"><button
+							class="myButton">PrivateTracker_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PrivateTracker/PrivateTracker.list"><button
+							class="myButton">PrivateTracker</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Adidas/Adidas.list"><button class="myButton">Adidas</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BaiFenDian/BaiFenDian.list"><button class="myButton">BaiFenDian</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Linux/Linux.list"><button class="myButton">Linux</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PayPal/PayPal.list"><button class="myButton">PayPal</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PPTV/PPTV.list"><button class="myButton">PPTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XiaoGouKeJi/XiaoGouKeJi.list"><button class="myButton">XiaoGouKeJi</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DianCeWangKe/DianCeWangKe.list"><button
+							class="myButton">DianCeWangKe</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HKedcity/HKedcity.list"><button class="myButton">HKedcity</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HaiNanHangKong/HaiNanHangKong.list"><button
+							class="myButton">HaiNanHangKong</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Android/Android.list"><button class="myButton">Android</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ShiJiChaoXing/ShiJiChaoXing.list"><button
+							class="myButton">ShiJiChaoXing</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PrimeVideo/PrimeVideo.list"><button class="myButton">PrimeVideo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CWSeed/CWSeed.list"><button class="myButton">CWSeed</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Yandex/Yandex.list"><button class="myButton">Yandex</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Yandex/Yandex_Resolve.list"><button class="myButton">Yandex_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TongCheng/TongCheng.list"><button class="myButton">TongCheng</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Telegram/Telegram.list"><button class="myButton">Telegram</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Telegram/Telegram_Resolve.list"><button
+							class="myButton">Telegram_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/CloudCN/CloudCN.list"><button class="myButton">CloudCN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/CloudCN/CloudCN_Resolve.list"><button
+							class="myButton">CloudCN_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/CloudGlobal/CloudGlobal.list"><button
+							class="myButton">CloudGlobal</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/CloudGlobal/CloudGlobal_Resolve.list"><button
+							class="myButton">CloudGlobal_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/AkamaiCloud/AkamaiCloud_Resolve.list"><button
+							class="myButton">AkamaiCloud_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/AkamaiCloud/AkamaiCloud.list"><button
+							class="myButton">AkamaiCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/AmazonCloud/AmazonCloud.list"><button
+							class="myButton">AmazonCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/AmazonCloud/AmazonCloud_Resolve.list"><button
+							class="myButton">AmazonCloud_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/HuaweiCloud/HuaweiCloud_Resolve.list"><button
+							class="myButton">HuaweiCloud_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/HuaweiCloud/HuaweiCloud.list"><button
+							class="myButton">HuaweiCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/JingDongCloud/JingDongCloud.list"><button
+							class="myButton">JingDongCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/JingDongCloud/JingDongCloud_Resolve.list"><button
+							class="myButton">JingDongCloud_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/360Cloud/360Cloud_Resolve.list"><button
+							class="myButton">360Cloud_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/360Cloud/360Cloud.list"><button class="myButton">360Cloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/NeteaseCloud/NeteaseCloud_Resolve.list"><button
+							class="myButton">NeteaseCloud_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/NeteaseCloud/NeteaseCloud.list"><button
+							class="myButton">NeteaseCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/TencentCloud/TencentCloud_Resolve.list"><button
+							class="myButton">TencentCloud_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/TencentCloud/TencentCloud.list"><button
+							class="myButton">TencentCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/BaiduCloud/BaiduCloud.list"><button
+							class="myButton">BaiduCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/BaiduCloud/BaiduCloud_Resolve.list"><button
+							class="myButton">BaiduCloud_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/HiNet/HiNet.list"><button class="myButton">HiNet</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/HiNet/HiNet_Resolve.list"><button
+							class="myButton">HiNet_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/KingsoftCloud/KingsoftCloud.list"><button
+							class="myButton">KingsoftCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloud/KingsoftCloud/KingsoftCloud_Resolve.list"><button
+							class="myButton">KingsoftCloud_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Weibo/Weibo.list"><button class="myButton">Weibo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MEGA/MEGA.list"><button class="myButton">MEGA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MEGA/MEGA_Resolve.list"><button class="myButton">MEGA_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Eleme/Eleme.list"><button class="myButton">Eleme</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CITIC/CITIC.list"><button class="myButton">CITIC</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GoogleFCM/GoogleFCM_Resolve.list"><button
+							class="myButton">GoogleFCM_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GoogleFCM/GoogleFCM.list"><button class="myButton">GoogleFCM</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PSBC/PSBC.list"><button class="myButton">PSBC</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SteamCN/SteamCN.list"><button class="myButton">SteamCN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/IMDB/IMDB.list"><button class="myButton">IMDB</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DynDNS/DynDNS.list"><button class="myButton">DynDNS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Verizon/Verizon.list"><button class="myButton">Verizon</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Reddit/Reddit.list"><button class="myButton">Reddit</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XueErSi/XueErSi.list"><button class="myButton">XueErSi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Picacg/Picacg.list"><button class="myButton">Picacg</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Snap/Snap.list"><button class="myButton">Snap</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Acplay/Acplay.list"><button class="myButton">Acplay</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GlobalMedia/GlobalMedia_Domain.list"><button
+							class="myButton">GlobalMedia_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GlobalMedia/GlobalMedia.list"><button class="myButton">GlobalMedia</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GlobalMedia/GlobalMedia_Resolve.list"><button
+							class="myButton">GlobalMedia_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/QingCloud/QingCloud.list"><button class="myButton">QingCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/iQIYIIntl/iQIYIIntl.list"><button class="myButton">iQIYIIntl</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/iQIYIIntl/iQIYIIntl_Resolve.list"><button
+							class="myButton">iQIYIIntl_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GoogleEarth/GoogleEarth.list"><button class="myButton">GoogleEarth</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/4Paradigm/4Paradigm.list"><button class="myButton">4Paradigm</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CNKI/CNKI.list"><button class="myButton">CNKI</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ProxyLite/ProxyLite.list"><button class="myButton">ProxyLite</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ProxyLite/ProxyLite_Resolve.list"><button
+							class="myButton">ProxyLite_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Teams/Teams.list"><button class="myButton">Teams</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/4chan/4chan.list"><button class="myButton">4chan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SystemOTA/SystemOTA.list"><button class="myButton">SystemOTA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DAZN/DAZN.list"><button class="myButton">DAZN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GlobalSign/GlobalSign.list"><button class="myButton">GlobalSign</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Teambition/Teambition.list"><button class="myButton">Teambition</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Emby/Emby.list"><button class="myButton">Emby</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/iFlytek/iFlytek.list"><button class="myButton">iFlytek</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Advertising/Advertising_Domain.list"><button
+							class="myButton">Advertising_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Advertising/Advertising_Resolve.list"><button
+							class="myButton">Advertising_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Advertising/Advertising.list"><button class="myButton">Advertising</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/OPPO/OPPO.list"><button class="myButton">OPPO</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Dropbox/Dropbox.list"><button class="myButton">Dropbox</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Opera/Opera_Resolve.list"><button class="myButton">Opera_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Opera/Opera.list"><button class="myButton">Opera</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Marketing/Marketing.list"><button class="myButton">Marketing</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Siri/Siri.list"><button class="myButton">Siri</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhongGuoShiHua/ZhongGuoShiHua.list"><button
+							class="myButton">ZhongGuoShiHua</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XiaoHongShu/XiaoHongShu.list"><button class="myButton">XiaoHongShu</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ATTWatchTV/ATTWatchTV.list"><button class="myButton">ATTWatchTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Sling/Sling.list"><button class="myButton">Sling</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Aerogard/Aerogard.list"><button class="myButton">Aerogard</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Embl/Embl.list"><button class="myButton">Embl</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaUnicom/ChinaUnicom_Resolve.list"><button
+							class="myButton">ChinaUnicom_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaUnicom/ChinaUnicom.list"><button class="myButton">ChinaUnicom</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Qobuz/Qobuz_Resolve.list"><button class="myButton">Qobuz_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Qobuz/Qobuz.list"><button class="myButton">Qobuz</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HoYoverse/HoYoverse.list"><button class="myButton">HoYoverse</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhangYue/ZhangYue.list"><button class="myButton">ZhangYue</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/JiGuangTuiSong/JiGuangTuiSong.list"><button
+							class="myButton">JiGuangTuiSong</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XiaoYuanKeJi/XiaoYuanKeJi.list"><button
+							class="myButton">XiaoYuanKeJi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cryptocurrency/Cryptocurrency.list"><button
+							class="myButton">Cryptocurrency</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Rockstar/Rockstar.list"><button class="myButton">Rockstar</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BaoFengYingYin/BaoFengYingYin.list"><button
+							class="myButton">BaoFengYingYin</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleTV/AppleTV.list"><button class="myButton">AppleTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Salesforce/Salesforce.list"><button class="myButton">Salesforce</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Scaleflex/Scaleflex.list"><button class="myButton">Scaleflex</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdvertisingTest/AdvertisingTest_Domain.list"><button
+							class="myButton">AdvertisingTest_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdvertisingTest/AdvertisingTest.list"><button
+							class="myButton">AdvertisingTest</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdvertisingTest/AdvertisingTest_Resolve.list"><button
+							class="myButton">AdvertisingTest_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMaxNoIP/ChinaMaxNoIP_Domain.list"><button
+							class="myButton">ChinaMaxNoIP_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMaxNoIP/ChinaMaxNoIP.list"><button
+							class="myButton">ChinaMaxNoIP</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MOOMusic/MOOMusic.list"><button class="myButton">MOOMusic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DanDanZan/DanDanZan.list"><button class="myButton">DanDanZan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Shopee/Shopee.list"><button class="myButton">Shopee</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Tencent/Tencent_Resolve.list"><button
+							class="myButton">Tencent_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Tencent/Tencent.list"><button class="myButton">Tencent</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/W3schools/W3schools.list"><button class="myButton">W3schools</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPs/ChinaIPs_No_IPv6.list"><button
+							class="myButton">ChinaIPs_No_IPv6</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPs/ChinaIPsTest/ChinaIPsTest_No_IPv6_Resolve.list"><button
+							class="myButton">ChinaIPsTest_No_IPv6_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPs/ChinaIPsTest/ChinaIPsTest_Resolve.list"><button
+							class="myButton">ChinaIPsTest_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPs/ChinaIPsTest/ChinaIPsTest.list"><button
+							class="myButton">ChinaIPsTest</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPs/ChinaIPsTest/ChinaIPsTest_No_IPv6.list"><button
+							class="myButton">ChinaIPsTest_No_IPv6</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPs/ChinaIPs.list"><button class="myButton">ChinaIPs</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPs/ChinaIPs_Resolve.list"><button
+							class="myButton">ChinaIPs_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaIPs/ChinaIPs_No_IPv6_Resolve.list"><button
+							class="myButton">ChinaIPs_No_IPv6_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PandoraTV/PandoraTV.list"><button class="myButton">PandoraTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Anthropic/Anthropic.list"><button class="myButton">Anthropic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/JingDong/JingDong.list"><button class="myButton">JingDong</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Emojipedia/Emojipedia.list"><button class="myButton">Emojipedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Slack/Slack.list"><button class="myButton">Slack</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/VipShop/VipShop.list"><button class="myButton">VipShop</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DouYin/DouYin.list"><button class="myButton">DouYin</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GoogleSearch/GoogleSearch.list"><button
+							class="myButton">GoogleSearch</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Lan/Lan.list"><button class="myButton">Lan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Lan/Lan_Resolve.list"><button class="myButton">Lan_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ShiNongZhiKe/ShiNongZhiKe.list"><button
+							class="myButton">ShiNongZhiKe</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/EA/EA.list"><button class="myButton">EA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdvertisingLite/AdvertisingLite.list"><button
+							class="myButton">AdvertisingLite</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdvertisingLite/AdvertisingLite_Domain.list"><button
+							class="myButton">AdvertisingLite_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdvertisingLite/AdvertisingLite_Resolve.list"><button
+							class="myButton">AdvertisingLite_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ITV/ITV.list"><button class="myButton">ITV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Pinduoduo/Pinduoduo.list"><button class="myButton">Pinduoduo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Oreilly/Oreilly.list"><button class="myButton">Oreilly</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LeTV/LeTV.list"><button class="myButton">LeTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Kingsoft/Kingsoft.list"><button class="myButton">Kingsoft</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Deepin/Deepin.list"><button class="myButton">Deepin</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WeiZhiYunDong/WeiZhiYunDong.list"><button
+							class="myButton">WeiZhiYunDong</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Nike/Nike.list"><button class="myButton">Nike</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LG/LG.list"><button class="myButton">LG</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LG/LG_Resolve.list"><button class="myButton">LG_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/6park/6park.list"><button class="myButton">6park</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BaiDuTieBa/BaiDuTieBa.list"><button class="myButton">BaiDuTieBa</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TVB/TVB.list"><button class="myButton">TVB</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cloudflarecn/Cloudflarecn.list"><button
+							class="myButton">Cloudflarecn</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/JianGuoYun/JianGuoYun.list"><button class="myButton">JianGuoYun</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaNews/ChinaNews.list"><button class="myButton">ChinaNews</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleProxy/AppleProxy.list"><button class="myButton">AppleProxy</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ViuTV/ViuTV.list"><button class="myButton">ViuTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NGA/NGA.list"><button class="myButton">NGA</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Origin/Origin.list"><button class="myButton">Origin</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/IPTVOther/IPTVOther_Domain.list"><button
+							class="myButton">IPTVOther_Domain</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/IPTVOther/IPTVOther.list"><button class="myButton">IPTVOther</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/IPTVOther/IPTVOther_Resolve.list"><button
+							class="myButton">IPTVOther_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/QuickConnect/QuickConnect.list"><button
+							class="myButton">QuickConnect</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WIX/WIX.list"><button class="myButton">WIX</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AiQiCha/AiQiCha.list"><button class="myButton">AiQiCha</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Hulu/Hulu.list"><button class="myButton">Hulu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CSDN/CSDN.list"><button class="myButton">CSDN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BesTV/BesTV.list"><button class="myButton">BesTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GoogleDrive/GoogleDrive.list"><button class="myButton">GoogleDrive</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BrightCove/BrightCove.list"><button class="myButton">BrightCove</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AmazonPrimeVideo/AmazonPrimeVideo.list"><button
+							class="myButton">AmazonPrimeVideo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YouMengChuangXiang/YouMengChuangXiang.list"><button
+							class="myButton">YouMengChuangXiang</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AmazonCN/AmazonCN.list"><button class="myButton">AmazonCN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NBC/NBC.list"><button class="myButton">NBC</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/GitBook/GitBook.list"><button class="myButton">GitBook</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TelegramUS/TelegramUS.list"><button class="myButton">TelegramUS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TelegramUS/TelegramUS_Resolve.list"><button
+							class="myButton">TelegramUS_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/17173/17173.list"><button class="myButton">17173</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhongWeiShiJi/ZhongWeiShiJi.list"><button
+							class="myButton">ZhongWeiShiJi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WangXinKeJi/WangXinKeJi.list"><button class="myButton">WangXinKeJi</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Mailru/Mailru.list"><button class="myButton">Mailru</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FindMy/FindMy.list"><button class="myButton">FindMy</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/zhanqi/zhanqi.list"><button class="myButton">zhanqi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/iQIYI/iQIYI_Resolve.list"><button class="myButton">iQIYI_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/iQIYI/iQIYI.list"><button class="myButton">iQIYI</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Anime/Anime.list"><button class="myButton">Anime</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/BMW/BMW.list"><button class="myButton">BMW</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MeiTuan/MeiTuan.list"><button class="myButton">MeiTuan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MOOV/MOOV.list"><button class="myButton">MOOV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Bahamut/Bahamut.list"><button class="myButton">Bahamut</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Faronics/Faronics.list"><button class="myButton">Faronics</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cnet/Cnet.list"><button class="myButton">Cnet</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SuNing/SuNing.list"><button class="myButton">SuNing</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Dedao/Dedao.list"><button class="myButton">Dedao</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Qyyjt/Qyyjt.list"><button class="myButton">Qyyjt</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YiXiaKeJi/YiXiaKeJi.list"><button class="myButton">YiXiaKeJi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Ubisoft/Ubisoft.list"><button class="myButton">Ubisoft</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LastPass/LastPass.list"><button class="myButton">LastPass</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhihuAds/ZhihuAds_Resolve.list"><button
+							class="myButton">ZhihuAds_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhihuAds/ZhihuAds.list"><button class="myButton">ZhihuAds</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Apifox/Apifox.list"><button class="myButton">Apifox</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Sectigo/Sectigo.list"><button class="myButton">Sectigo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Disney/Disney.list"><button class="myButton">Disney</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Douyu/Douyu.list"><button class="myButton">Douyu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HBO/HBO.list"><button class="myButton">HBO</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TikTok/TikTok.list"><button class="myButton">TikTok</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WildRift/WildRift.list"><button class="myButton">WildRift</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/iCloud/iCloud.list"><button class="myButton">iCloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Twitch/Twitch.list"><button class="myButton">Twitch</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Twitch/Twitch_Resolve.list"><button class="myButton">Twitch_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Nikkei/Nikkei.list"><button class="myButton">Nikkei</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleHardware/AppleHardware.list"><button
+							class="myButton">AppleHardware</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Electron/Electron.list"><button class="myButton">Electron</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DNS/DNS_Resolve.list"><button class="myButton">DNS_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DNS/DNS.list"><button class="myButton">DNS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Blued/Blued.list"><button class="myButton">Blued</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TianYaForum/TianYaForum.list"><button class="myButton">TianYaForum</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MIUIPrivacy/MIUIPrivacy.list"><button class="myButton">MIUIPrivacy</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Pubmatic/Pubmatic.list"><button class="myButton">Pubmatic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PCCW/PCCW.list"><button class="myButton">PCCW</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/VidolTV/VidolTV.list"><button class="myButton">VidolTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ByteDance/ByteDance_Resolve.list"><button
+							class="myButton">ByteDance_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ByteDance/ByteDance.list"><button class="myButton">ByteDance</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Niconico/Niconico.list"><button class="myButton">Niconico</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/115/115.list"><button class="myButton">115</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/4399/4399.list"><button class="myButton">4399</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SkyGO/SkyGO.list"><button class="myButton">SkyGO</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Mojitianqi/Mojitianqi.list"><button class="myButton">Mojitianqi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YouZan/YouZan.list"><button class="myButton">YouZan</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KuaiShou/KuaiShou.list"><button class="myButton">KuaiShou</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhiYinManKe/ZhiYinManKe.list"><button class="myButton">ZhiYinManKe</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChinaMobile/ChinaMobile.list"><button class="myButton">ChinaMobile</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Jwplayer/Jwplayer.list"><button class="myButton">Jwplayer</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LuDaShi/LuDaShi.list"><button class="myButton">LuDaShi</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XiamiMusic/XiamiMusic.list"><button class="myButton">XiamiMusic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Ubuntu/Ubuntu.list"><button class="myButton">Ubuntu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Instagram/Instagram.list"><button class="myButton">Instagram</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/SMZDM/SMZDM.list"><button class="myButton">SMZDM</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Sina/Sina.list"><button class="myButton">Sina</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Scholar/Scholar.list"><button class="myButton">Scholar</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Comodo/Comodo.list"><button class="myButton">Comodo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Kantv/Kantv.list"><button class="myButton">Kantv</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleFirmware/AppleFirmware.list"><button
+							class="myButton">AppleFirmware</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/FanFou/FanFou.list"><button class="myButton">FanFou</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Global/Global_Resolve.list"><button class="myButton">Global_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Global/Global.list"><button class="myButton">Global</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Global/Global_Domain.list"><button class="myButton">Global_Domain</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/KingSmith/KingSmith.list"><button class="myButton">KingSmith</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AbemaTV/AbemaTV.list"><button class="myButton">AbemaTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Rakuten/Rakuten.list"><button class="myButton">Rakuten</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AdvertisingMiTV/AdvertisingMiTV.list"><button
+							class="myButton">AdvertisingMiTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Geely/Geely.list"><button class="myButton">Geely</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LeJu/LeJu.list"><button class="myButton">LeJu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NaverTV/NaverTV.list"><button class="myButton">NaverTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Verisign/Verisign.list"><button class="myButton">Verisign</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ZhiYunZhong/ZhiYunZhong.list"><button class="myButton">ZhiYunZhong</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Addthis/Addthis.list"><button class="myButton">Addthis</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/AppleMusic/AppleMusic.list"><button class="myButton">AppleMusic</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/36kr/36kr.list"><button class="myButton">36kr</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WorldofWarcraft/WorldofWarcraft_Resolve.list"><button
+							class="myButton">WorldofWarcraft_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/WorldofWarcraft/WorldofWarcraft.list"><button
+							class="myButton">WorldofWarcraft</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Zhihu/Zhihu.list"><button class="myButton">Zhihu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Zhihu/Zhihu_Resolve.list"><button class="myButton">Zhihu_Resolve</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Olevod/Olevod.list"><button class="myButton">Olevod</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Whatsapp/Whatsapp_Resolve.list"><button
+							class="myButton">Whatsapp_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Whatsapp/Whatsapp.list"><button class="myButton">Whatsapp</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CEB/CEB.list"><button class="myButton">CEB</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/YunFanJiaSu/YunFanJiaSu.list"><button class="myButton">YunFanJiaSu</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Cake/Cake.list"><button class="myButton">Cake</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Disqus/Disqus.list"><button class="myButton">Disqus</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TIDAL/TIDAL.list"><button class="myButton">TIDAL</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Sohu/Sohu.list"><button class="myButton">Sohu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Spark/Spark.list"><button class="myButton">Spark</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/APKCombo/APKCombo.list"><button class="myButton">APKCombo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/XianYu/XianYu.list"><button class="myButton">XianYu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Jsdelivr/Jsdelivr.list"><button class="myButton">Jsdelivr</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PChome/PChome.list"><button class="myButton">PChome</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/OpenAI/OpenAI.list"><button class="myButton">OpenAI</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/51nod/51nod.list"><button class="myButton">51nod</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Wikimedia/Wikimedia.list"><button class="myButton">Wikimedia</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/MiWu/MiWu.list"><button class="myButton">MiWu</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Sony/Sony.list"><button class="myButton">Sony</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/LinkedIn/LinkedIn.list"><button class="myButton">LinkedIn</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Udacity/Udacity.list"><button class="myButton">Udacity</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CIBN/CIBN.list"><button class="myButton">CIBN</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/178/178.list"><button class="myButton">178</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/TaiWanGood/TaiWanGood.list"><button class="myButton">TaiWanGood</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Stripe/Stripe.list"><button class="myButton">Stripe</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Binance/Binance.list"><button class="myButton">Binance</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Vivo/Vivo.list"><button class="myButton">Vivo</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NetEase/NetEase_Resolve.list"><button
+							class="myButton">NetEase_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/NetEase/NetEase.list"><button class="myButton">NetEase</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DtDNS/DtDNS.list"><button class="myButton">DtDNS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Gucci/Gucci.list"><button class="myButton">Gucci</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/9News/9News.list"><button class="myButton">9News</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/UnionPay/UnionPay.list"><button class="myButton">UnionPay</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/HWTV/HWTV.list"><button class="myButton">HWTV</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/PBS/PBS.list"><button class="myButton">PBS</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Rarbg/Rarbg.list"><button class="myButton">Rarbg</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DiabloIII/DiabloIII.list"><button class="myButton">DiabloIII</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/DiabloIII/DiabloIII_Resolve.list"><button
+							class="myButton">DiabloIII_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/CNNIC/CNNIC.list"><button class="myButton">CNNIC</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Maocloud/Maocloud.list"><button class="myButton">Maocloud</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/ChunYou/ChunYou.list"><button class="myButton">ChunYou</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/51Job/51Job.list"><button class="myButton">51Job</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/U17/U17.list"><button class="myButton">U17</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Hijacking/Hijacking_Resolve.list"><button
+							class="myButton">Hijacking_Resolve</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="/rule/surge/Hijacking/Hijacking.list"><button class="myButton">Hijacking</button></a></p>
+			</h6>
+
+		</div>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+			var searchBar = $("#searchBar");
+			searchBar.on("input", function () {
+				search();
+			});
+
+			function search() {
+				var keyword = searchBar.val().trim().toLowerCase();
+				var searchResults = $("#searchResults");
+				searchResults.empty();
+				if (keyword === "") {
+					$(".myButton").show();
+					return;
+				}
+				$(".myButton").hide().each(function () {
+					var buttonText = $(this).text().trim().toLowerCase();
+					if (buttonText.indexOf(keyword) !== -1) {
+						var newButton = $(this).clone();
+						var href = $(this).parent().attr("href");
+						newButton.wrap($("<a>").attr("href", href));
+						searchResults.append(newButton.parent());
+						newButton.show();
+					}
+				});
+			}
+			$("#searchResults").on("click", ".myButton", function (event) {
+				var target = $(event.target);
+				var buttonText = target.text().trim().toLowerCase();
+				var href = target.parent().attr("href");
+				window.location.href = href;
+			});
+			$("#content").on("click", "a", function (event) {
+				event.preventDefault();
+				var href = $(this).attr("href");
+				window.location.href = href;
+			});
+		</script>
+		<script>
+			var colors = ['#4285F4', '#DB4437', '#0F9D58'];
+			var buttons = document.querySelectorAll('.myButton');
+			var prevColorIndex = -1;
+			for (var i = 0; i < buttons.length; i++) {
+				var availableColors = [...colors];
+				if (prevColorIndex > -1) {
+					availableColors.splice(prevColorIndex, 1);
+				}
+				var randomIndex = Math.floor(Math.random() * availableColors.length);
+				buttons[i].style.backgroundColor = availableColors[randomIndex];
+				prevColorIndex = colors.indexOf(availableColors[randomIndex]);
+			}
+		</script>
+		<script>
+			$('button').on('click', function () {
+				var bgColor = $(this).css('background-color');
+				bgColor = bgColor.replace('rgb(', '').replace(')', '').split(',');
+				var r = 255 - parseInt(bgColor[0]);
+				var g = 255 - parseInt(bgColor[1]);
+				var b = 255 - parseInt(bgColor[2]);
+				$(this).css('background-color', 'rgb(' + r + ',' + g + ',' + b + ')');
+			});
+		</script>
+
+		<script>
+			$(document).ready(function () {
+				$('#share-button').click(function () {
+					$('#share-options').toggle();
+				});
+			});
+		</script>
+
+</body>
+
+</html>

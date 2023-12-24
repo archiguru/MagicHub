@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="GitHub RAW 转换 URL">
+	<title> GitHub URL 转换 </title>
+	<link rel="stylesheet" href="https://www.layuiweb.com/res/layui/dist/css/layui.css"
+		tppabs="http://res.layui.com/layui/dist/css/layui.css" media="all">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<style>
+		h1 {
+			margin-top: revert;
+			display: block;
+			font-weight: 400;
+		}
+
+		body {
+			margin: 20px 10%;
+		}
+
+		.layui-layer {
+			border-radius: 10px;
+			background-color: #FF69B4;
+			color: white;
+		}
+
+		.container {
+			display: initial;
+			max-width: 80%;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		.input-group {
+			width: 100%;
+			margin: 10px;
+			display: flex;
+			align-items: center;
+		}
+
+		.input-group label {
+			padding-right: 7px;
+			font-size: 13px;
+		}
+
+		.input-group input {
+			flex: 1;
+			padding: 7px;
+			font-size: 13px;
+		}
+
+		.btn {
+			margin-top: 10px;
+			display: inline-block;
+			padding: 8px 10px;
+			font-size: 13px;
+			cursor: pointer;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 5px;
+		}
+
+		.btn:hover {
+			background-color: #3e8e41;
+		}
+
+		.output-group {
+			width: 100%;
+			margin: 10px;
+			display: flex;
+			align-items: center;
+		}
+
+		.output-group label {
+			padding-right: 10px;
+			font-size: 13px;
+		}
+
+		.output-group input {
+			flex: 1;
+			padding: 10px;
+			font-size: 13px;
+		}
+
+		#output {
+			min-height: 84px;
+			width: 100%;
+			margin: 7px auto;
+			outline: none;
+			resize: none;
+			font-family: monospace;
+			font-size: 13px;
+			line-height: 1.5;
+			padding: 10px;
+			border-radius: 7px;
+		}
+	</style>
+</head>
+
+<body>
+	<ul class="breadcrumb">
+		<li><a href="https://magic.eoysky.com">MagicHub主页</a></li>
+		<li><a href="url.html"> URL 转换</a></li>
+	</ul>
+
+
+	<h1 style="text-align: center; color: #2F4F4F;">GitHub URL 转换</h1>
+	<div style="display: flex; margin: 30px 0;">
+		<span style="flex: 1; height: 3px; background-color: #0F9D58;"></span>
+		<span style="flex: 1; height: 3px; background-color: #F4B400;"></span>
+		<span style="flex: 1; height: 3px; background-color: #DB4437;"></span>
+		<span style="flex: 1; height: 3px; background-color: #4285F4;"></span>
+	</div>
+	<div class="container">
+		<h1>URL 转换器 <button class="btn" style="margin-left: 10px; height: 40px; width: 128px;"
+				id="jsdelivrBtn">GitHub2jsDelivr</button></h1>
+		<p>
+		<h2 class="singleUrl">1、单条URL处理：</h2>
+		</p>
+		<div class="input-group">
+			<label for="input-url"><b>输入 URL:</b></label>
+			<input type="text" id="input-url" />
+			<button class="btn" style="margin-top: 0; margin-left: 10px;" id="convert-btn">转换</button>
+		</div>
+		<div class="output-group">
+			<label for="output-url"><b>输出 URL:</b></label>
+			<input type="text" id="output-url" readonly />
+		</div>
+		<div>
+			<p>
+			<h2 class="secendP">2、上传文件处理：</h2>
+			</p>
+			<input style="width: 180px; margin-top: 13px;" class="btn" type="file" id="fileInput" />
+			<button class="btn" style="margin-left: 10px; height: 40px;" id="copyButton" disabled>复制</button>
+			<br />
+			<textarea id="output" readonly></textarea>
+		</div>
+	</div>
+
+	<script src="https://www.layuiweb.com/res/layui/dist/layui.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.0/dist/jquery.min.js"></script>
+	<script>
+		const fileInput = document.getElementById('fileInput');
+		const copyButton = document.getElementById('copyButton');
+		const output = document.getElementById('output');
+
+
+		// 处理上传的文件
+		fileInput.addEventListener('change', () => {
+			// 获取上传的文件
+			const file = fileInput.files[0];
+			if (!file) return;
+
+			// 读取文件内容
+			const reader = new FileReader();
+			reader.onload = () => {
+				const content = reader.result;
+				// 处理文件内容
+				const newContent = content.split('\n').map(line => {
+					// 检查当前行是否包含 raw.githubusercontent.com 域名
+					if (line.includes("raw.githubusercontent.com")) {
+						// 替换 raw.githubusercontent.com 为 cdn.jsdelivr.net/gh
+						line = line.replace("raw.githubusercontent.com", "cdn.jsdelivr.net/gh");
+						if (line.includes("/master/")) {
+							line = line.replace("/master/", "@master/");
+						}
+						if (line.includes("/main/")) {
+							line = line.replace("/main/", "@main/");
+						}
+					}
+					return line;
+				}).join('\n');
+				output.value = newContent;
+				copyButton.disabled = false;
+			};
+			// 调整 textarea 元素的高度以适应内容
+			output.style.height = 'auto';
+			output.style.height = output.scrollHeight + 'px';
+			reader.readAsText(file);
+		});
+		copyButton.addEventListener('click', () => {
+			output.select();
+			document.execCommand('copy');
+			window.layer.msg('复制成功！', {
+				time: 2000
+			});
+		});
+
+		//加载模块
+		layui.use(function () {
+			var layer = layui.layer
+			document.getElementById('convert-btn').addEventListener('click', function () {
+				var inputUrl = document.getElementById('input-url').value.trim();
+				if (inputUrl.startsWith('https://raw.githubusercontent.com/')) {
+					var parts = inputUrl.split('/');
+					var username = parts[3];
+					var repo = parts[4];
+					var branch = parts[5];
+					var path = parts.slice(6).join('/');
+					var outputUrl = `https://cdn.jsdelivr.net/gh/${username}/${repo}@${branch}/${path}`;
+					document.getElementById('output-url').value = outputUrl;
+
+					// 复制到剪切板
+					navigator.clipboard.writeText(outputUrl).then(function () {
+						window.layer.msg('已复制到剪切板', {
+							time: 2000
+						});
+					}, function () {
+						window.layer.msg('复制失败', {
+							time: 2000
+						});
+					});
+				} else {
+					window.layer.msg('请输入正确的 URL', {
+						time: 2000
+					});
+				}
+			});
+		})
+	</script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$('button').on('click', function () {
+			var bgColor = $(this).css('background-color');
+			bgColor = bgColor.replace('rgb(', '').replace(')', '').split(',');
+			var r = 255 - parseInt(bgColor[0]);
+			var g = 255 - parseInt(bgColor[1]);
+			var b = 255 - parseInt(bgColor[2]);
+			$(this).css('background-color', 'rgb(' + r + ',' + g + ',' + b + ')');
+		});
+	</script>
+
+
+	<script>
+		$(document).ready(function () {
+			$('#share-button').click(function () {
+				$('#share-options').toggle();
+			});
+		});
+	</script>
+	<script>
+		// 初始化 Layer 组件
+		layui.use(['layer'], function () {
+			var layer = layui.layer;
+
+			function openPopup() {
+				layer.open({
+					type: 2,
+					title: '弹出框',
+					area: ['90%', '90%'],
+					content: 'https://www.jsdelivr.com/github'
+				});
+			}
+
+			$('#jsdelivrBtn').on('click', function () {
+				openPopup();
+			});
+		});
+
+	</script>
+
+
+</body>
+
+</html>

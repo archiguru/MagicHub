@@ -1,0 +1,107 @@
+const apiUrls  = [
+  "https://www.tianqiapi.com/life/lifepro?appid=32189289&appsecret=3RdKetVh",
+  "https://www.tianqiapi.com/life/lifepro?appid=24222488&appsecret=5rwuHzOJ",
+  "https://www.tianqiapi.com/life/lifepro?appid=47273245&appsecret=BCK1QTW5",
+  "https://www.tianqiapi.com/life/lifepro?appid=22756429&appsecret=4jyd8izR",
+  "https://www.tianqiapi.com/life/lifepro?appid=55944146&appsecret=qndepHp7"
+];
+
+let currentIndex = 0;
+
+const params = getParams($argument);
+
+function testNextUrl() {
+  if (currentIndex >= apiUrls.length) {
+    console.log("All URLs failed");
+    $done();
+    return;
+  }
+
+  const apiUrl = apiUrls[currentIndex];
+
+  $httpClient.get(apiUrl, function (error, response, data) {
+    if (error) {
+      console.log(`Error for URL ${currentIndex + 1}: ${error}`);
+      currentIndex++;
+      testNextUrl();
+    } else {
+      handleResponse(data);
+    }
+  });
+}
+
+function handleResponse(data) {
+  var obj = JSON.parse(data);
+  console.log(obj);
+
+
+  if (obj.errcode === 100) {
+    currentIndex++;
+    testNextUrl(); 
+  } else {
+
+        var title = obj.city+"生活指数"+obj.update_time;
+        var subtitle = "下拉查看更多";
+        var kongtiao=obj.data.kongtiao.name+":"+obj.data.kongtiao.level+","+obj.data.kongtiao.desc;
+        var guomin=obj.data.guomin.name+":"+obj.data.guomin.level+","+obj.data.guomin.desc;
+        var chenlian=obj.data.chenlian.name+":"+obj.data.chenlian.level+","+obj.data.chenlian.desc;
+        var shushidu=obj.data.shushidu.name+":"+obj.data.shushidu.level+","+obj.data.shushidu.desc;
+        var chuanyi=obj.data.chuanyi.name+":"+obj.data.chuanyi.level+","+obj.data.chuanyi.desc;
+        var diaoyu=obj.data.diaoyu.name+":"+obj.data.diaoyu.level+","+obj.data.diaoyu.desc;
+        var fangshai=obj.data.fangshai.name+":"+obj.data.fangshai.level+","+obj.data.fangshai.desc;
+        var guangjie=obj.data.guangjie.name+":"+obj.data.guangjie.level+","+obj.data.guangjie.desc;
+        var taiyangjing=obj.data.taiyangjing.name+":"+obj.data.taiyangjing.level+","+obj.data.taiyangjing.desc;
+        var ganmao=obj.data.ganmao.name+":"+obj.data.ganmao.level+","+obj.data.ganmao.desc;
+        var ganzao=obj.data.ganzao.name+":"+obj.data.ganzao.level+","+obj.data.ganzao.desc;
+        var huachuan=obj.data.huachuan.name+":"+obj.data.huachuan.level+","+obj.data.huachuan.desc;
+        var jiaotong=obj.data.jiaotong.name+":"+obj.data.jiaotong.level+","+obj.data.jiaotong.desc;
+        var lukuang=obj.data.lukuang.name+":"+obj.data.lukuang.level+","+obj.data.lukuang.desc;
+        var liangshai=obj.data.liangshai.name+":"+obj.data.liangshai.level+","+obj.data.liangshai.desc;
+        var meifa=obj.data.meifa.name+":"+obj.data.meifa.level+","+obj.data.meifa.desc;
+        var yeshenghuo=obj.data.yeshenghuo.name+":"+obj.data.yeshenghuo.level+","+obj.data.yeshenghuo.desc;
+        var pijiu=obj.data.pijiu.name+":"+obj.data.pijiu.level+","+obj.data.pijiu.desc;
+        var fengzheng=obj.data.fengzheng.name+":"+obj.data.fengzheng.level+","+obj.data.fengzheng.desc;
+        var wuran=obj.data.wuran.name+":"+obj.data.wuran.level+","+obj.data.wuran.desc;
+        var huazhuang=obj.data.huazhuang.name+":"+obj.data.huazhuang.level+","+obj.data.huazhuang.desc;
+        var lvyou=obj.data.lvyou.name+":"+obj.data.lvyou.level+","+obj.data.lvyou.desc;
+        var ziwaixian=obj.data.ziwaixian.name+":"+obj.data.ziwaixian.level+","+obj.data.ziwaixian.desc;
+        var fenghan=obj.data.fenghan.name+":"+obj.data.fenghan.level+","+obj.data.fenghan.desc;
+        var xiche=obj.data.xiche.name+":"+obj.data.xiche.level+","+obj.data.xiche.desc;
+        var xinqing=obj.data.xinqing.name+":"+obj.data.xinqing.level+","+obj.data.xinqing.desc;
+        var yundong=obj.data.yundong.name+":"+obj.data.yundong.level+","+obj.data.yundong.desc;
+        var yuehui=obj.data.yuehui.name+":"+obj.data.yuehui.level+","+obj.data.yuehui.desc;
+        var yusan=obj.data.yusan.name+":"+obj.data.yusan.level+","+obj.data.yusan.desc;
+        var zhongshu=obj.data.zhongshu.name+":"+obj.data.zhongshu.level+","+obj.data.zhongshu.desc;
+        var kouzhao=obj.data.kouzhao.name+":"+obj.data.kouzhao.level+","+obj.data.kouzhao.desc;
+
+    var content =
+      "👕" + chuanyi + "\n" +
+      "🧴" + fangshai + "\n" +
+      "🤒" + ganmao + "\n" +
+      "🌁" + wuran + "\n" +
+      "🚗" + xiche + "\n" +
+      "☂️" + yusan + "\n" +
+      "🌡︎" + zhongshu;
+
+    var body = {
+      title: title,
+      subtitle: subtitle,
+      content: content,
+      icon: params.icon,
+      "icon-color": params.color
+    };
+
+    $done(body);
+  }
+}
+
+function getParams(param) {
+  return Object.fromEntries(
+    $argument
+      .split("&")
+      .map((item) => item.split("="))
+      .map(([k, v]) => [k, decodeURIComponent(v)])
+  );
+}
+
+testNextUrl();

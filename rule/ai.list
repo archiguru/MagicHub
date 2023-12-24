@@ -1,0 +1,18 @@
+# > Bard
+DOMAIN,bard.google.com
+
+# > GitHub Copilot
+DOMAIN,github.com
+DOMAIN,copilot.github.com
+DOMAIN-SUFFIX,blob.core.windows.net
+IP-CIDR,13.107.42.0/24,no-resolve
+IP-CIDR,13.107.213.0/24,no-resolve
+
+# > Microsoft Copilot
+DOMAIN,copilot.microsoft.com
+DOMAIN,www.bingapis.com
+DOMAIN,services.bingapis.com
+DOMAIN,www.bing.com
+DOMAIN,sydney.bing.com
+DOMAIN,r.bing.com
+DOMAIN,storage.live.com
