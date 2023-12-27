@@ -1,4 +1,4 @@
-# 由whatshub.top自动维护 202312260442
+# 由whatshub.top自动维护 202312270442
 payload:
   - IP-ASN,10111
   - IP-ASN,10206
@@ -4659,6 +4659,7 @@ payload:
   - IP-ASN,150374
   - IP-ASN,150400
   - IP-ASN,150775
+  - IP-ASN,151193
   - IP-ASN,151311
   - IP-ASN,151313
   - IP-ASN,151397
