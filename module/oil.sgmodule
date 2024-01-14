@@ -1,0 +1,9 @@
+#!name=今日油价
+#!desc=油价提醒
+#！URL=https://magic.eoysky.com/module/oil.sgmodule
+
+[Panel]
+今日油价 = script-name=今日油价,update-interval=3600
+
+[Script]
+今日油价 = type=generic,timeout=10,script-path=https://magic.eoysky.com/script/deezertidal/oil.js,argument=icon=car&color=#c932a9&provname=浙江
