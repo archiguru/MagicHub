@@ -1,0 +1,226 @@
+body {
+    margin: 20px 10%;
+}
+
+.myButton {
+    animation-name: button-animation;
+    animation-duration: 0.7s;
+    animation-timing-function: ease-in-out;
+}
+
+/* 定义适用于PC的样式 */
+.subtitles {
+    min-height: 240px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
+    font-size: 15px;
+    animation-name: button-animation;
+    animation-duration: 0.7s;
+    animation-timing-function: ease-in-out;
+}
+
+/* 定义适用于移动设备的样式 */
+@media screen and (max-width: 600px) {
+    .subtitles {
+        min-height: 240px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        font-size: 15px;
+        animation-name: button-animation;
+        animation-duration: 0.7s;
+        animation-timing-function: ease-in-out;
+    }
+}
+
+
+a {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 7px;
+    text-decoration: none;
+    color: white;
+}
+
+.subtitles>a:nth-child(1),
+.subtitles>a:nth-child(2),
+.subtitles>a:nth-child(3),
+.subtitles>a:nth-child(4),
+.subtitles>a:nth-child(5),
+.subtitles>a:nth-child(6),
+.subtitles>a:nth-child(7),
+.subtitles>a:nth-child(8),
+.subtitles>a:nth-child(9),
+.subtitles>a:nth-child(10),
+.subtitles>a:nth-child(11) {
+    margin: 12px 0;
+    padding: 12px 0;
+}
+
+.subtitles a:hover {
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+        0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.bottom-line {
+    display: flex;
+    place-items: center end;
+    height: auto;
+    margin-top: inherit;
+}
+
+#ip-info {
+    width: 100%;
+    text-align: left;
+}
+
+#ip-info ul {
+    display: inline-flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#ip-info li {
+    margin: 0 3px;
+    padding: 3px;
+    border: 2px solid #5f9ce5;
+    border-radius: 6px;
+}
+@media screen and (max-width: 600px) {
+    #ip-info li {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.subtitles>a {
+    justify-self: center;
+    text-shadow: 2px 4px 10px black;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes button-animation {
+    0% {
+        transform: scale(0.3);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.myButton {
+    font-size: 15px;
+    text-shadow: 2px 4px 10px black;
+    color: white;
+    width: 120px;
+    height: 50px;
+    border-radius: 7px;
+    border: none;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    justify-items: center;
+    grid-gap: 10px;
+}
+
+.myButton:hover {
+    background-color: #db4437;
+    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
+        0 17px 50px 0 rgba(0, 0, 0, 0.19);
+}
+
+.breadcrumb {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.breadcrumb li {
+    margin-right: 5px;
+}
+
+.breadcrumb li a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 1px 5px;
+    font-size: 14px;
+    border-radius: 10px;
+    background-color: #064571;
+    color: white;
+}
+
+.breadcrumb li::after {
+    content: ">";
+    margin: 0 10px;
+}
+
+.breadcrumb li:last-child::after {
+    content: "";
+}
+
+#searchResults button {
+    text-decoration: none;
+    width: auto;
+}
+
+.search-bar {
+    text-align: center;
+}
+
+.search-bar input {
+    border: 2px solid #4285f4;
+    border-left-color: #db4437;
+    border-top-color: #0f9d58;
+    border-bottom-color: #f4b400;
+    border-right-color: #4285f4;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 8px;
+    width: 200px;
+    outline: none;
+}
+
+.search-bar input:focus {
+    border-color: #db4437;
+}
+
+.search-bar button {
+    background-color: #4285f4;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 5px;
+    padding: 1px;
+    margin-left: -4px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #357ae8;
+}
+
+@media only screen and (min-width: 768px) {
+    .search-bar input {
+        width: 50%;
+        max-width: 500px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .search-bar input {
+        width: 90%;
+    }
+}

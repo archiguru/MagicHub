@@ -1,0 +1,56 @@
+name: Auto Sync
+run-name: 自动同步工作流-${{ github.run_id }}
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "20 5 * * *"
+ 
+jobs:
+  Auto-Sync-Files: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: 克隆 MagicHub
+        uses: actions/checkout@v4
+
+      - name: 克隆 blackmatrix7's repo
+        uses: actions/checkout@v4
+        with:
+          repository: blackmatrix7/ios_rule_script
+          path: ios_rule_script
+          
+      - name: 同步 ios_rule_script
+        run: |
+          echo "******  🚗 开始同步文件  ******"
+          mkdir -p blank external icon rewrite rule/surge rule/adguard script
+          rsync -az --exclude={'*.png','*.jpg','*.gif'} --delete ios_rule_script/blank/ blank
+          rsync -az --exclude={'*.png','*.jpg','*.gif'} --delete ios_rule_script/external/Surge/ external
+          rsync -az --exclude={'*.png','*.jpg','*.gif'} --delete ios_rule_script/icon/ icon
+          rsync -az --exclude={'*.png','*.jpg','*.gif'} --delete ios_rule_script/rewrite/Surge/ rewrite
+          rsync -az --exclude={'*.png','*.jpg','*.gif'} --delete ios_rule_script/rule/Surge/ rule/surge
+          rsync -az --exclude={'*.png','*.jpg','*.gif'} --delete ios_rule_script/rule/AdGuard/ rule/adguard
+          rsync -az --exclude={'*.png','*.jpg','*.gif'} --delete ios_rule_script/script/ script
+          echo "******  ✅ ios_rule_script 文件同步完成  ******"
+          rm -rf ios_rule_script
+          
+      - name: 克隆 Deezertidal's repo
+        uses: actions/checkout@v4
+        with:
+          repository: deezertidal/Surge_Module
+          path: Surge_Module
+          
+      - name: 同步 Surge_Module
+        run: |
+          echo "******  🚗 开始同步文件  ******"
+          mkdir -p rule/deezertidal
+          mkdir -p script/deezertidal
+          rsync -az --delete Surge_Module/files/ script/deezertidal
+          rsync -az --delete Surge_Module/rule/ rule/deezertidal
+          echo "******  ✅ Surge_Module 文件同步完成  ******"
+          rm -rf Surge_Module
+      
+      - name: 自动提交并推送已同步文件
+        run: |
+          bash ./bin/auto_push.sh
+        env:
+          GH_TOKEN:  ${{ secrets.GH_TOKEN }}
+ 

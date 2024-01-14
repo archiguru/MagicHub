@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Surge模块">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<title> 核心配置文件 </title>
+</head>
+
+<body>
+	<ul class="breadcrumb">
+		<li><a href="https://magic.eoysky.com">MagicHub主页</a></li>
+		<li><a href="surge.html">核心配置文件</a></li>
+	</ul>
+	<h1 style="text-align: center; color: #064571;">
+		<img src="/images/surge.png" alt="核心配置文件"
+			style="width:30px; height: 30px; margin-right: 10px;">Surge 配置
+	</h1>
+	<h5 style="text-align: center; color: #064571;">安装位置：首页-配置列表-从 URL 下载配置</h5>
+	<div style="display: flex; margin: 30px 0;">
+		<span style="flex: 1; height: 3px; background-color: #0F9D58;"></span>
+		<span style="flex: 1; height: 3px; background-color: #F4B400;"></span>
+		<span style="flex: 1; height: 3px; background-color: #DB4437;"></span>
+		<span style="flex: 1; height: 3px; background-color: #4285F4;"></span>
+	</div>
+	<div class="search-bar">
+		<input id="searchBar" type="text" placeholder="搜索 Search...">
+	</div>
+	<div id="searchResults"></div>
+	<div id="content">
+		<div class="container">
+			<h6>
+				<p><a href="https://magic.eoysky.com/conf/iOS-Surge.conf"><button class="myButton">📱 iOS</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="https://magic.eoysky.com/conf/iOS-Surge-Dev.conf"><button class="myButton">📱 iOS
+							Dev</button></a></p>
+			</h6>
+			<h6>
+				<p><a href="https://magic.eoysky.com/conf/macOS-Surge.conf"><button class="myButton">💻
+							macOS</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="https://magic.eoysky.com/conf/Loon-Pro.conf"><button class="myButton">📱
+							Loon</button></a>
+				</p>
+			</h6>
+			<h6>
+				<p><a href="https://magic.eoysky.com/conf/Clash-Pro.yml"><button class="myButton">📱
+					Clash</button></a>
+				</p>
+			</h6>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+			$(".myButton").on("click", function (event) {
+				event.preventDefault();
+
+				var target = $(event.target);
+				var buttonText = target.text().trim().toLowerCase();
+				var href = target.parent().attr("href");
+
+				var tempInput = $("<input>");
+				$("body").append(tempInput);
+				tempInput.val(href).select();
+				document.execCommand("copy");
+				tempInput.remove();
+
+				alert("链接已复制");
+			});
+		</script>
+		<script>
+			var searchBar = $("#searchBar");
+			searchBar.on("input", function () {
+				search();
+			});
+
+			function search() {
+				var keyword = searchBar.val().trim().toLowerCase();
+				var searchResults = $("#searchResults");
+				searchResults.empty();
+
+				if (keyword === "") {
+					$(".myButton").show();
+					return;
+				}
+
+				$(".myButton").hide().each(function () {
+					var buttonText = $(this).text().trim().toLowerCase();
+					if (buttonText.indexOf(keyword) !== -1) {
+						var newButton = $(this).clone();
+						var href = $(this).parent().attr("href");
+						newButton.wrap($("<a>").attr("href", href));
+						searchResults.append(newButton.parent());
+						newButton.show();
+					}
+				});
+			}
+
+			$("#searchResults").on("click", ".myButton", function (event) {
+				event.preventDefault();
+				var target = $(event.target);
+				var buttonText = target.text().trim().toLowerCase();
+				var href = target.parent().attr("href");
+
+				var tempInput = $("<input>");
+				$("body").append(tempInput);
+				tempInput.val(href).select();
+				document.execCommand("copy");
+				tempInput.remove();
+
+				alert("链接已复制");
+			});
+		</script>
+		<script>
+			var colors = ['#4285F4', '#DB4437', '#0F9D58'];
+			var buttons = document.querySelectorAll('.myButton');
+			var prevColorIndex = -1;
+			for (var i = 0; i < buttons.length; i++) {
+				var availableColors = [...colors];
+				if (prevColorIndex > -1) {
+					availableColors.splice(prevColorIndex, 1);
+				}
+				var randomIndex = Math.floor(Math.random() * availableColors.length);
+				buttons[i].style.backgroundColor = availableColors[randomIndex];
+				prevColorIndex = colors.indexOf(availableColors[randomIndex]);
+			}
+		</script>
+		<script>
+			$('button').on('click', function () {
+				var bgColor = $(this).css('background-color');
+				bgColor = bgColor.replace('rgb(', '').replace(')', '').split(',');
+				var r = 255 - parseInt(bgColor[0]);
+				var g = 255 - parseInt(bgColor[1]);
+				var b = 255 - parseInt(bgColor[2]);
+				$(this).css('background-color', 'rgb(' + r + ',' + g + ',' + b + ')');
+			});
+		</script>
+
+
+		<script>
+			$(document).ready(function () {
+				$('#share-button').click(function () {
+					$('#share-options').toggle();
+				});
+			});
+		</script>
+
+</body>
+
+</html>

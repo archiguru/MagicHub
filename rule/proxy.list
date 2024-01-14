@@ -1,0 +1,4 @@
+# NAME: 代理规则补充
+
+DOMAIN-SUFFIX,jsdelivr.com
+DOMAIN-SUFFIX,maxmind.com

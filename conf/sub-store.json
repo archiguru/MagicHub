@@ -1,0 +1,566 @@
+{
+  "subs": [
+    {
+      "name": "fast",
+      "displayName": "Fast",
+      "icon": "https://icon-icons.com/downloadimage.php?id=18642&root=121/PNG/256/&file=net_world_earth_19893.png",
+      "process": [
+        {
+          "type": "Quick Setting Operator",
+          "args": {
+            "useless": "ENABLED",
+            "udp": "DEFAULT",
+            "scert": "DEFAULT",
+            "tfo": "DEFAULT",
+            "vmess aead": "DEFAULT"
+          }
+        },
+        {
+          "type": "Resolve Domain Operator",
+          "args": {
+            "provider": "Cloudflare"
+          },
+          "id": "83874720.22568758"
+        },
+        {
+          "type": "Region Filter",
+          "args": [
+            "HK",
+            "JP",
+            "TW"
+          ],
+          "id": "97011511.78195992"
+        },
+        {
+          "type": "Sort Operator",
+          "args": "asc",
+          "id": "41982499.22855654"
+        },
+        {
+          "type": "Handle Duplicate Operator",
+          "args": {
+            "action": "rename",
+            "position": "back",
+            "template": "0 1 2 3 4 5 6 7 8 9",
+            "link": "-"
+          },
+          "id": "73843450.98954484"
+        }
+      ],
+      "source": "remote",
+      "url": "https://flmsgo.xyz/?L1N1YnNjcmlwdGlvbi9TdXJnZU5vZGVMaXN0P3NpZD0yODAzMSZ0b2tlbj00dkVQS01MUW05WSZtbT0zODExNyZlNDZmOTNhYjY4Mw==",
+      "content": "",
+      "ua": "",
+      "display-name": "Fast"
+    },
+    {
+      "name": "ai",
+      "displayName": "AI",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
+      "process": [
+        {
+          "type": "Quick Setting Operator",
+          "args": {
+            "useless": "ENABLED",
+            "udp": "DEFAULT",
+            "scert": "DEFAULT",
+            "tfo": "DEFAULT",
+            "vmess aead": "DEFAULT"
+          }
+        },
+        {
+          "type": "Resolve Domain Operator",
+          "args": {
+            "provider": "Cloudflare"
+          },
+          "id": "83874720.22568758"
+        },
+        {
+          "type": "Region Filter",
+          "args": [
+            "US"
+          ],
+          "id": "97011511.78195992"
+        },
+        {
+          "type": "Sort Operator",
+          "args": "asc",
+          "id": "41982499.22855654"
+        },
+        {
+          "type": "Handle Duplicate Operator",
+          "args": {
+            "action": "rename",
+            "position": "back",
+            "template": "0 1 2 3 4 5 6 7 8 9",
+            "link": " "
+          },
+          "id": "73843450.98954484"
+        }
+      ],
+      "source": "remote",
+      "url": "https://flmsgo.xyz/?L1N1YnNjcmlwdGlvbi9TdXJnZU5vZGVMaXN0P3NpZD0yODAzMSZ0b2tlbj00dkVQS01MUW05WSZtbT0zODExNyZlNDZmOTNhYjY4Mw==",
+      "content": "",
+      "ua": "",
+      "display-name": "AI"
+    },
+    {
+      "name": "us",
+      "displayName": "美国",
+      "icon": "https://icon-icons.com/downloadimage.php?id=111929&root=1694/PNG/512/&file=usunitedstatesflag_111929.png",
+      "process": [
+        {
+          "type": "Quick Setting Operator",
+          "args": {
+            "useless": "ENABLED",
+            "udp": "DEFAULT",
+            "scert": "DEFAULT",
+            "tfo": "DEFAULT",
+            "vmess aead": "DEFAULT"
+          }
+        },
+        {
+          "type": "Resolve Domain Operator",
+          "args": {
+            "provider": "Cloudflare"
+          },
+          "id": "91243395.11940119"
+        },
+        {
+          "type": "Region Filter",
+          "args": [
+            "US"
+          ],
+          "id": "80720388.46637815"
+        },
+        {
+          "type": "Regex Rename Operator",
+          "args": [
+            {
+              "expr": "\\sIEPL\\s中继\\s\\d",
+              "now": ""
+            }
+          ],
+          "id": "53722853.95728722"
+        },
+        {
+          "type": "Handle Duplicate Operator",
+          "args": {
+            "action": "rename",
+            "position": "back",
+            "template": "0 1 2 3 4 5 6 7 8 9",
+            "link": " "
+          },
+          "id": "19374338.54461046"
+        },
+        {
+          "type": "Sort Operator",
+          "args": "asc",
+          "id": "81975298.77372594"
+        }
+      ],
+      "source": "remote",
+      "url": "https://api.flowercloud.xyz/osubscribe.php?sid=25485&token=Sgezy1Qx&sip002=1",
+      "content": "",
+      "ua": "",
+      "display-name": "美国"
+    },
+    {
+      "name": "hk",
+      "displayName": "香港",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/2560px-Flag_of_Hong_Kong.svg.png",
+      "process": [
+        {
+          "type": "Quick Setting Operator",
+          "args": {
+            "useless": "ENABLED",
+            "udp": "DEFAULT",
+            "scert": "DEFAULT",
+            "tfo": "DEFAULT",
+            "vmess aead": "DEFAULT"
+          }
+        },
+        {
+          "type": "Resolve Domain Operator",
+          "args": {
+            "provider": "Cloudflare"
+          },
+          "id": "91243395.11940119"
+        },
+        {
+          "type": "Region Filter",
+          "args": [
+            "HK"
+          ],
+          "id": "80720388.46637815"
+        },
+        {
+          "type": "Regex Rename Operator",
+          "args": [
+            {
+              "expr": "\\sIEPL\\s中继\\s\\d",
+              "now": ""
+            }
+          ],
+          "id": "95552838.01517059"
+        },
+        {
+          "type": "Handle Duplicate Operator",
+          "args": {
+            "action": "rename",
+            "position": "back",
+            "template": "0 1 2 3 4 5 6 7 8 9",
+            "link": " "
+          },
+          "id": "19374338.54461046"
+        },
+        {
+          "type": "Sort Operator",
+          "args": "asc",
+          "id": "81975298.77372594"
+        }
+      ],
+      "source": "remote",
+      "url": "https://api.flowercloud.xyz/osubscribe.php?sid=25485&token=Sgezy1Qx&sip002=1",
+      "content": "",
+      "ua": "",
+      "display-name": "香港"
+    },
+    {
+      "name": "jp",
+      "displayName": "日本",
+      "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/2560px-Flag_of_Japan.svg.png",
+      "process": [
+        {
+          "type": "Quick Setting Operator",
+          "args": {
+            "useless": "ENABLED",
+            "udp": "DEFAULT",
+            "scert": "DEFAULT",
+            "tfo": "DEFAULT",
+            "vmess aead": "DEFAULT"
+          }
+        },
+        {
+          "type": "Resolve Domain Operator",
+          "args": {
+            "provider": "Cloudflare"
+          },
+          "id": "91243395.11940119"
+        },
+        {
+          "type": "Region Filter",
+          "args": [
+            "JP"
+          ],
+          "id": "80720388.46637815"
+        },
+        {
+          "type": "Regex Rename Operator",
+          "args": [
+            {
+              "expr": "\\sIEPL\\s中继\\s\\d",
+              "now": ""
+            }
+          ],
+          "id": "88627581.30646701"
+        },
+        {
+          "type": "Handle Duplicate Operator",
+          "args": {
+            "action": "rename",
+            "position": "back",
+            "template": "0 1 2 3 4 5 6 7 8 9",
+            "link": " "
+          },
+          "id": "19374338.54461046"
+        },
+        {
+          "type": "Sort Operator",
+          "args": "asc",
+          "id": "81975298.77372594"
+        }
+      ],
+      "source": "remote",
+      "url": "https://api.flowercloud.xyz/osubscribe.php?sid=25485&token=Sgezy1Qx&sip002=1",
+      "content": "",
+      "ua": "",
+      "display-name": "日本"
+    },
+    {
+      "name": "tw",
+      "displayName": "台湾",
+      "icon": "https://icon-icons.com/downloadimage.php?id=127914&root=2087/PNG/512/&file=taiwan_icon_127914.png",
+      "process": [
+        {
+          "type": "Quick Setting Operator",
+          "args": {
+            "useless": "ENABLED",
+            "udp": "DEFAULT",
+            "scert": "DEFAULT",
+            "tfo": "DEFAULT",
+            "vmess aead": "DEFAULT"
+          }
+        },
+        {
+          "type": "Resolve Domain Operator",
+          "args": {
+            "provider": "Cloudflare"
+          },
+          "id": "91243395.11940119"
+        },
+        {
+          "type": "Region Filter",
+          "args": [
+            "TW"
+          ],
+          "id": "80720388.46637815"
+        },
+        {
+          "type": "Regex Rename Operator",
+          "args": [
+            {
+              "expr": "\\sIEPL\\s中继\\s\\d",
+              "now": ""
+            }
+          ],
+          "id": "8563824.686035804"
+        },
+        {
+          "type": "Handle Duplicate Operator",
+          "args": {
+            "action": "rename",
+            "position": "back",
+            "template": "0 1 2 3 4 5 6 7 8 9",
+            "link": " "
+          },
+          "id": "19374338.54461046"
+        },
+        {
+          "type": "Sort Operator",
+          "args": "asc",
+          "id": "81975298.77372594"
+        }
+      ],
+      "source": "remote",
+      "url": "https://api.flowercloud.xyz/osubscribe.php?sid=25485&token=Sgezy1Qx&sip002=1",
+      "content": "",
+      "ua": "",
+      "display-name": "台湾"
+    },
+    {
+      "name": "sg",
+      "displayName": "新加坡",
+      "icon": "https://icon-icons.com/downloadimage.php?id=127892&root=2087/PNG/512/&file=singapore_icon_127892.png",
+      "process": [
+        {
+          "type": "Quick Setting Operator",
+          "args": {
+            "useless": "ENABLED",
+            "udp": "DEFAULT",
+            "scert": "DEFAULT",
+            "tfo": "DEFAULT",
+            "vmess aead": "DEFAULT"
+          }
+        },
+        {
+          "type": "Resolve Domain Operator",
+          "args": {
+            "provider": "Cloudflare"
+          },
+          "id": "91243395.11940119"
+        },
+        {
+          "type": "Region Filter",
+          "args": [
+            "SG"
+          ],
+          "id": "80720388.46637815"
+        },
+        {
+          "type": "Sort Operator",
+          "args": "asc",
+          "id": "81975298.77372594"
+        },
+        {
+          "type": "Regex Rename Operator",
+          "args": [
+            {
+              "expr": "\\sIEPL\\s中继\\s\\d",
+              "now": ""
+            }
+          ],
+          "id": "17200956.697127335"
+        },
+        {
+          "type": "Handle Duplicate Operator",
+          "args": {
+            "action": "rename",
+            "position": "back",
+            "template": "0 1 2 3 4 5 6 7 8 9",
+            "link": " "
+          },
+          "id": "19374338.54461046"
+        }
+      ],
+      "source": "remote",
+      "url": "https://api.flowercloud.xyz/osubscribe.php?sid=25485&token=Sgezy1Qx&sip002=1",
+      "content": "",
+      "ua": "",
+      "display-name": "新加坡"
+    },
+    {
+      "name": "uk",
+      "displayName": "英国",
+      "icon": "https://icon-icons.com/downloadimage.php?id=111699&root=1694/PNG/512/&file=gbunitedkingdomflag_111699.png",
+      "process": [
+        {
+          "type": "Quick Setting Operator",
+          "args": {
+            "useless": "ENABLED",
+            "udp": "DEFAULT",
+            "scert": "DEFAULT",
+            "tfo": "DEFAULT",
+            "vmess aead": "DEFAULT"
+          }
+        },
+        {
+          "type": "Resolve Domain Operator",
+          "args": {
+            "provider": "Cloudflare"
+          },
+          "id": "91243395.11940119"
+        },
+        {
+          "type": "Region Filter",
+          "args": [
+            "UK"
+          ],
+          "id": "80720388.46637815"
+        },
+        {
+          "type": "Sort Operator",
+          "args": "asc",
+          "id": "81975298.77372594"
+        },
+        {
+          "type": "Regex Rename Operator",
+          "args": [
+            {
+              "expr": "\\sIEPL\\s中继\\s\\d",
+              "now": ""
+            }
+          ],
+          "id": "21502942.08753427"
+        },
+        {
+          "type": "Handle Duplicate Operator",
+          "args": {
+            "action": "rename",
+            "position": "back",
+            "template": "0 1 2 3 4 5 6 7 8 9",
+            "link": " "
+          },
+          "id": "19374338.54461046"
+        },
+        {
+          "type": "Regex Filter",
+          "args": {
+            "keep": false,
+            "regex": [
+              "Traffic"
+            ]
+          },
+          "id": "24840416.309770208"
+        }
+      ],
+      "source": "remote",
+      "url": "https://api.flowercloud.xyz/osubscribe.php?sid=25485&token=Sgezy1Qx&sip002=1",
+      "content": "",
+      "ua": "",
+      "display-name": "英国"
+    },
+    {
+      "name": "others",
+      "displayName": "其他节点",
+      "icon": "https://www.sucaijishi.com/uploadfile/2019/1107/20191107030712317.png",
+      "process": [
+        {
+          "type": "Quick Setting Operator",
+          "args": {
+            "useless": "ENABLED",
+            "udp": "DEFAULT",
+            "scert": "DEFAULT",
+            "tfo": "DEFAULT",
+            "vmess aead": "DEFAULT"
+          }
+        },
+        {
+          "type": "Resolve Domain Operator",
+          "args": {
+            "provider": "Cloudflare"
+          },
+          "id": "91243395.11940119"
+        },
+        {
+          "type": "Regex Filter",
+          "args": {
+            "keep": false,
+            "regex": [
+              "港|香港|英国|美国|台湾|日本|新加坡|Expire|Traffic"
+            ]
+          },
+          "id": "49018980.85278096"
+        },
+        {
+          "type": "Sort Operator",
+          "args": "asc",
+          "id": "81975298.77372594"
+        },
+        {
+          "type": "Regex Rename Operator",
+          "args": [
+            {
+              "expr": "\\sIEPL\\s中继\\s\\d",
+              "now": ""
+            }
+          ],
+          "id": "80997217.40821421"
+        },
+        {
+          "type": "Handle Duplicate Operator",
+          "args": {
+            "action": "rename",
+            "position": "back",
+            "template": "0 1 2 3 4 5 6 7 8 9",
+            "link": " "
+          },
+          "id": "19374338.54461046"
+        }
+      ],
+      "source": "remote",
+      "url": "https://api.flowercloud.xyz/osubscribe.php?sid=25485&token=Sgezy1Qx&sip002=1",
+      "content": "",
+      "ua": "",
+      "display-name": "其他节点"
+    }
+  ],
+  "collections": [],
+  "artifacts": [],
+  "rules": [],
+  "schemaVersion": "2.0",
+  "settings": {
+    "githubUser": "archiguru",
+    "gistToken": "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",
+    "theme": {
+      "auto": false,
+      "name": "darkblue",
+      "dark": "dark",
+      "light": "light"
+    },
+    "autoDownloadGistSync": false,
+    "syncTime": 1699898033115,
+    "avatarUrl": "https://avatars.githubusercontent.com/u/58116035?v=4",
+    "artifactStore": "https://gist.github.com/archiguru/c0d01cc146cd6751d011b2099c5a6bcc"
+  }
+}

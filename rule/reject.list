@@ -1,0 +1,30 @@
+# NAME: RejectAdditional
+# AUTHOR: Maximo
+# REPO: https://github.com/archiguru/MagicHub
+# UPDATED: 2023-08-18 09:37:44
+# DESCRIPTION: 分流规则中不含URL-REGEX类型，无需搭配MITM使用
+# AND: 0
+# DOMAIN: 15
+# DOMAIN-KEYWORD: 0
+# DOMAIN-SUFFIX: 1
+# IP-CIDR: 0
+# URL-REGEX: 0
+# TOTAL: 16
+DOMAIN,adstats.tencentmusic.com
+DOMAIN,ad.tencentmusic.com
+DOMAIN,adcdn.tencentmusic.com
+DOMAIN,adexpo.tencentmusic.com
+DOMAIN,adclick.tencentmusic.com
+DOMAIN,otheve.beacon.qq.com
+DOMAIN,monitor.music.qq.com
+DOMAIN,stat.y.qq.com
+DOMAIN,tmead.y.qq.com
+DOMAIN,oth.str.mdt.qq.com
+DOMAIN,h.trace.qq.com
+DOMAIN,tmead.y.qq.com
+DOMAIN-SUFFIX,imtmp.net
+DOMAIN,sdk.e.qq.com
+DOMAIN,p.l.qq.com
+DOMAIN,us.l.qq.com
+DOMAIN,tangram.e.qq.com
+DOMAIN-SUFFIX,ehg-youtube.hitbox.com

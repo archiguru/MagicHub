@@ -1,0 +1,16 @@
+#!name=GitHub 加速
+#!desc=GitHub / raw / gist 加速 ( mirror.ghproxy.com )
+#！URL=https://magic.eoysky.com/module/github.sgmodule
+
+[URL Rewrite]
+# GitHub
+^https?:\/\/(www.)?\.github\.com https://mirror.ghproxy.com/https://github.com 302
+
+# GitHub raw
+^https?:\/\/raw\.githubusercontent\.com https://mirror.ghproxy.com/https://raw.githubusercontent.com 302
+
+# GitHub gits
+^https?:\/\/gist\.githubusercontent\.com https://mirror.ghproxy.com/https://gist.githubusercontent.com 302
+
+[MITM]
+hostname = %APPEND% github.com, raw.githubusercontent.com, gist.githubusercontent.com
