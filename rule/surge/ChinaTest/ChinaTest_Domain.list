@@ -1,14 +1,14 @@
 # NAME: ChinaTest
 # AUTHOR: blackmatrix7
 # REPO: https://github.com/blackmatrix7/ios_rule_script
-# UPDATED: 2024-02-02 03:05:58
-# DOMAIN: 111
+# UPDATED: 2024-02-03 01:46:36
+# DOMAIN: 109
 # DOMAIN-KEYWORD: 9
 # DOMAIN-SUFFIX: 64774
 # IP-CIDR: 11
 # IP-CIDR6: 4
 # USER-AGENT: 31
-# TOTAL: 64940
+# TOTAL: 64938
 .0-6.com
 .00.net
 .000.link
@@ -38988,7 +38988,6 @@
 .mscto.com
 .msddp.com
 .msecnd.net
-.msedge.net
 .msfpay.com
 .msgcarry.com
 .msgtjj.com
@@ -40801,6 +40800,7 @@
 .office-peixun.com
 .office.com
 .office.net
+.office365.com
 .officectrl.com
 .officese.com
 .officesoftcn.com
@@ -64799,7 +64799,6 @@ ocsp.pki.goog
 opencourse.pku.edu.cn
 origin-a.akamaihd.ne
 origin-a.akamaihd.net
-outlook.office365.com
 play.1ucrs.com
 prod-controlbe.floonet.goog
 prod-databe.floonet.goog
@@ -64831,7 +64830,6 @@ scanservice1.qpdp1.net
 service.urchin.com
 settings.xn--9trs65b.com
 sms.imagetasks.com
-smtp.office365.com
 ss.bjmu.edu.cn
 staging-controlbe.floonet.goog
 staging-databe.floonet.goog
