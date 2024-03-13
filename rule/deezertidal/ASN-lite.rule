@@ -1,5 +1,6 @@
-# 由whatshub.top自动维护 202403120446
+# 由whatshub.top自动维护 202403130446
 payload:
+  - IP-ASN,3460
   - IP-ASN,4134
   - IP-ASN,4538
   - IP-ASN,4611
